@@ -1,5 +1,10 @@
 extend ../layout
 block content
+	div#main-title
+		if category == 'all'
+			h2 All threads
+		else
+			h2 #{category}
 	for thread in threads
 		article.thread
 			b 

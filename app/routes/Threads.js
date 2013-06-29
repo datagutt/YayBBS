@@ -3,11 +3,20 @@ module.exports = function(app, db){
 
 	app.get('/', function(req, res){
 		var config = require('../../config'),
-			categories = [];
+			categories = [],
+			category,
+			find = {};
 		
 		for(key in config.categories){
 			categories.push(key);
 		}
+		
+		if(category = req.query.c){
+			find['category'] = category;
+		}else{
+			category = 'all';
+		}
+		
 		/*var a = new Thread({
 			user_id: 1, 
 			subject: 'What is your favorite food?',
@@ -24,11 +33,18 @@ module.exports = function(app, db){
 		});
 		a.save();*/
 		
-		Thread.find().sort({lastUpdate: -1}).exec(function(err, threads){
-			res.render('partials/threads', {
-				'threads': threads,
-				'categories': categories
-			});
+		Thread.find(find).sort({lastUpdate: -1}).exec(function(err, threads){
+			if(threads.length > 0){
+				res.render('partials/threads', {
+					'threads': threads,
+					'categories': categories,
+					'category': category
+				});
+			}else{
+				res.render('partials/error', {
+					'message': 'This category does not exist.'
+				});
+			}
 		});
 	});
 };

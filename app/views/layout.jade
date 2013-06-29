@@ -3,11 +3,17 @@ html
 	head
 		meta(charset='utf-8')
 		meta(name='viewport', content='width=device-width, initial-scale=1.0')
+		link(rel='stylesheet', href='/css/forum.css')
 		title YayBBS
 
 		body
 			div#container
-				div#content 
-					block content
-				div#footer
+				div#left-col
+					header
+						h1#logo
+							a(href='/') YayBBS
+				div#right-col
+					div#content 
+						block content
+				footer
 					p Copyright 2013 #{settings.site_name}

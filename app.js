@@ -31,7 +31,10 @@ fs.readdirSync(appDir + 'routes').forEach(function(name){
 });
 
 app.get('*', function(req, res){
-	res.send('404', 404);
+	res.status(404);
+	res.render('partials/error', {
+		message: 'Page not found'
+	});
 });
 
 db.connect('mongodb://' + config.db.host + '/' + config.db.name);
