@@ -15,7 +15,7 @@ p {
 	margin-bottom: 10px;
 }
 code {
-	font-family: 'Courier New',monospace;
+	font-family: 'Courier New', monospace;
 	font-size: 9pt;
 	color: #000000;
 	white-space: pre;
@@ -32,6 +32,52 @@ header {
 	top: 15px;
 	left: 25px;
 	width: 200px;
+}
+.node {
+	padding: 10px;
+    margin: 0px;
+    margin-bottom:15px;
+}
+#login-box {
+	background: #494949;
+	min-height: 110px;
+}
+/* I should use h5 but it derps */
+#login-box .title {
+	font-size: 14px;
+	line-height: 1.8em;
+	padding-bottom: 1em;
+	color: #ffffff;
+	font-weight: 900;
+}
+#login-box p {
+	font-size: 9px;
+	margin: 0 0 8px 0;
+}
+#login-box a {
+	color: #959595;
+	font-size: 10px;
+}
+#login-form {
+	text-align: left;
+}
+#login-box, #login-form label {
+	color: #ffffff;
+}
+#login-form label {
+	margin-right: 3px;
+}
+#login-form input {	
+	width: 90px;
+	margin-right: 8px;
+}
+#login-form button {	
+	font-size: 9px;
+}
+#login-form div {
+	margin-bottom: 5px;
+	height: 21px;
+	padding-top: 3px;
 }
 #right-col {
 	margin: 25px 0 0 240px;

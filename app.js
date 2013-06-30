@@ -5,7 +5,7 @@ var fs = require('fs'),
 	slug = require('slug');
 var config = require('./config'),
 	appDir = __dirname + '/app/';
-	
+
 app.set('views', appDir + '/views');
 app.set('view engine', 'jade');
 app.set('site_name', 'YayBBS');
@@ -17,6 +17,7 @@ app.use(express.cookieParser());
 app.use(express.session({secret: config.server.secret}));
 app.use(app.router);
 
+app.locals.pretty = true;
 app.locals.slug = function(title){
 	return slug(title);
 };

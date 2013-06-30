@@ -3,15 +3,29 @@ html
 	head
 		meta(charset='utf-8')
 		meta(name='viewport', content='width=device-width, initial-scale=1.0')
+		link(rel='stylesheet', href='/css/normalize.css')
 		link(rel='stylesheet', href='/css/forum.css')
 		title YayBBS
 
 		body
-			div#container
+			div#wrapper
 				div#left-col
 					header
 						h1#logo
 							a(href='/') YayBBS
+					div#login-box.node
+						span.title Not a member?
+						p
+							a(href='/auth/register') Register
+						form#login-form(action='/auth/login', method='post')
+							div
+								label(for='username') U:
+								input#username(type='text', name='username', tabindex='1')
+								button(type='submit', tabindex='3') Do it!
+							div
+								label(for='password') P:
+								input#password(type='password', name='password', tabindex='2')
+								a#forgot-password(href='#') Forgot it?
 				div#right-col
 					div#content 
 						block content
