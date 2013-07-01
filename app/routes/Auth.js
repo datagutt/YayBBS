@@ -13,6 +13,9 @@ module.exports = function(app, models){
 				user.comparePassword(password, function(err, isMatch){
 					if(isMatch){
 						// TODO: session shit
+						req.session.user = {
+							'username': user.username	
+						};
 						res.end('logged in!');
 					}else{
 						res.render('partials/error', {

@@ -13,19 +13,31 @@ html
 					header
 						h1#logo
 							a(href='/') YayBBS
-					div#login-box.node
-						span.title Not a member?
-						p
-							a(href='/auth/register') Register
-						form#login-form(action='/auth/login', method='post')
-							div
-								label(for='username') U:
-								input#username(type='text', name='username', tabindex='1')
-								button(type='submit', tabindex='3') Do it!
-							div
-								label(for='password') P:
-								input#password(type='password', name='password', tabindex='2')
-								a#forgot-password(href='#') Forgot it?
+					if loggedin
+						div#user-box.node
+							h4
+								span Hi 
+								a(href='/user/#{user.username}') #{user.username}
+							ul
+								li
+									a#preferences(href='/preferences') Preferences
+								li
+									form(action='/auth/logout', method='post')
+										input#logout_btn(type='submit', value='Log out!')
+					else
+						div#login-box.node
+							span.title Not a member?
+							p
+								a(href='/auth/register') Register
+							form#login-form(action='/auth/login', method='post')
+								div
+									label(for='username') U:
+									input#username(type='text', name='username', tabindex='1')
+									button(type='submit', tabindex='3') Do it!
+								div
+									label(for='password') P:
+									input#password(type='password', name='password', tabindex='2')
+									a#forgot-password(href='#') Forgot it?
 				div#right-col
 					div#content 
 						block content

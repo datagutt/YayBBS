@@ -79,6 +79,17 @@ header {
 	height: 21px;
 	padding-top: 3px;
 }
+#user-box {
+	border: 1px dotted #959595;
+	padding: 10px;
+	margin-bottom: 15px;
+}
+#user-box h4 {
+	padding-bottom: 3px;
+}
+#user-box li {
+	line-height: 10px;
+}
 #right-col {
 	margin: 25px 0 0 240px;
 	padding: 0 25px 50px 0;

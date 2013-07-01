@@ -15,12 +15,20 @@ app.use(express.bodyParser());
 app.use(express.methodOverride());
 app.use(express.cookieParser());
 app.use(express.session({secret: config.server.secret}));
+app.use(function(req, res, next){
+	app.locals.loggedin = (typeof req.session.user !== 'undefined');
+	if(req.session.user){
+		app.locals.user = req.session.user;
+	}
+	next();
+});
 app.use(app.router);
 
 app.locals.pretty = true;
 app.locals.slug = function(title){
 	return slug(title);
 };
+
 
 var models = require(appDir + 'models')(db);
 fs.readdirSync(appDir + 'routes').forEach(function(name){
