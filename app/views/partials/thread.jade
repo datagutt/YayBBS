@@ -1,0 +1,15 @@
+extend ../layout
+block content
+	div#thread
+		div#main-title
+			if thread && thread.subject
+				h2 #{thread.subject}
+			for comment in comments
+				article.comment
+					div.comment-user
+						span.username
+							a(href='/user/#{comment.author}') #{comment.author}
+					if comment.deleted
+						div.comment-content(style='color:red') This comment has been removed.
+					else
+						div.comment-content #{comment.content}

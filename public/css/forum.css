@@ -101,10 +101,25 @@ header {
 	padding-top: 51px;
 }
 #main-title {
+	display: block;
 	border-bottom: 1px dotted #959595;
 }
-#main-title h2 {
+.comment {
+	margin-bottom: 2px;
+	border-bottom: solid 1px #CCCCCC;
+	position: relative;
+}
+.comment-user {
 	float: left;
+	width: 105px;
+	margin-top: 5px;
+}
+.comment-user .username {
+	line-height: 16px;
+}
+.comment-content {
+	margin: 5px 0 0 125px;
+	font-size: 14px;
 }
 article, footer, .comments, form, aside {
 	padding: 1em 0 .8em;

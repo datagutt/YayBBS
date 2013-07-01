@@ -1,10 +1,3 @@
-var renderPage = function(res, obj){
-	res.render('partials/threads', {
-		'threads': obj.threads,
-		'categories': obj.categories,
-		'category': obj.category
-	});
-};
 module.exports = function(app, models){
 	var Thread = models.Thread;
 	var User = models.User;
@@ -28,6 +21,7 @@ module.exports = function(app, models){
 		/*var a = new Thread({
 			user_id: '51d167a56db736cc16000002', 
 			subject: 'What is your favorite food?',
+			content: 'So?',
 			comments: [
 				{
 					user_id: 2,
@@ -43,20 +37,22 @@ module.exports = function(app, models){
 		
 		Thread.find(find).sort({lastUpdate: -1}).exec(function(err, threads){
 			if(threads.length > 0){
-				for(var i in threads){
+				var i = 0;
+				[].forEach.call(threads, function(thread){
 					User.findOne({_id: threads[i].user_id}, function(err, user){
 						if(user){
 							threads[i].author = user.username;
 						}
 						if(i == threads.length - 1){
-							renderPage(res, {
+							res.render('partials/threads', {
 								'threads': threads,
 								'categories': categories,
 								'category': category
 							});
 						}
+						i++;
 					});
-				}
+				});
 			}else{
 				res.render('partials/error', {
 					'message': 'This category does not exist.'
@@ -67,14 +63,23 @@ module.exports = function(app, models){
 	
 	app.get('/thread/:id/:subject', function(req, res){
 		Thread.findOne({_id: req.params.id}).exec(function(err, thread){
-			if(thread){
+			if(thread && thread.comments){
 				var comments = thread.comments;
-				for(var i in comments){
-					if(comments[i].deleted){
-						delete comments[i].deleted;
-					}
-				}
-				res.send(comments);
+				var i = 0;
+				[].forEach.call(comments, function(comment){
+					User.findOne({_id: comments[i].user_id}, function(err, user){
+						if(user){
+							comments[i].author = user.username;
+						}
+						if(i == comments.length - 1){
+							res.render('partials/thread', {
+								'thread': thread,
+								'comments': comments
+							});
+						}
+						i++;
+					});
+				})
 			}else{
 				res.render('partials/error', {
 					'message': 'This thread does not exist.'
