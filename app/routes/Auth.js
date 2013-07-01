@@ -16,7 +16,7 @@ module.exports = function(app, models){
 						req.session.user = {
 							'username': user.username	
 						};
-						res.end('logged in!');
+						res.redirect('/');
 					}else{
 						res.render('partials/error', {
 							message: 'Wrong username or password'
