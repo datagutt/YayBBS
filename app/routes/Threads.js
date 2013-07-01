@@ -1,6 +1,14 @@
-module.exports = function(app, db){
-	var Thread = require('../models/Thread')(db);
-
+var renderPage = function(res, obj){
+	res.render('partials/threads', {
+		'threads': obj.threads,
+		'categories': obj.categories,
+		'category': obj.category
+	});
+};
+module.exports = function(app, models){
+	var Thread = models.Thread;
+	var User = models.User;
+	
 	app.get('/', function(req, res){
 		var config = require('../../config'),
 			categories = [],
@@ -18,7 +26,7 @@ module.exports = function(app, db){
 		}
 		
 		/*var a = new Thread({
-			user_id: 1, 
+			user_id: '51d167a56db736cc16000002', 
 			subject: 'What is your favorite food?',
 			comments: [
 				{
@@ -35,11 +43,20 @@ module.exports = function(app, db){
 		
 		Thread.find(find).sort({lastUpdate: -1}).exec(function(err, threads){
 			if(threads.length > 0){
-				res.render('partials/threads', {
-					'threads': threads,
-					'categories': categories,
-					'category': category
-				});
+				for(var i in threads){
+					User.findOne({_id: threads[i].user_id}, function(err, user){
+						if(user){
+							threads[i].author = user.username;
+						}
+						if(i == threads.length - 1){
+							renderPage(res, {
+								'threads': threads,
+								'categories': categories,
+								'category': category
+							});
+						}
+					});
+				}
 			}else{
 				res.render('partials/error', {
 					'message': 'This category does not exist.'

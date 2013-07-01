@@ -3,7 +3,7 @@ module.exports = function(mongoose){
 	var Schema = mongoose.Schema,
 		ObjectId = Schema.ObjectId;
 	var Thread = new Schema({
-		user_id: {type: Number},
+		user_id: ObjectId,
 		subject: {type: String, default: ''},
 		created: {type: Date, default: Date.now},
 		lastUpdate: {type: Date, default: Date.now},

@@ -9,4 +9,4 @@ block content
 		article.thread
 			b 
 				a(href='/thread/#{thread.id}/#{slug(thread.subject)}') #{thread.subject}
-			span  by #{thread.user_id} on #{thread.created}
+			span  by #{thread.author} on #{thread.created}

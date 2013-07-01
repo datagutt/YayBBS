@@ -22,11 +22,12 @@ app.locals.slug = function(title){
 	return slug(title);
 };
 
+var models = require(appDir + 'models')(db);
 fs.readdirSync(appDir + 'routes').forEach(function(name){
 	if(name.indexOf('.js') == name.length - 3){
 		var controller = require(appDir + 'routes/' + name);
 		if(controller){
-			controller(app, db);
+			controller(app, models);
 		}
 	}
 });
