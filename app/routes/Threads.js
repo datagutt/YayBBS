@@ -14,7 +14,7 @@ module.exports = function(app, db){
 		if(category = req.query.c){
 			find['category'] = category;
 		}else{
-			category = 'all';
+			find['category'] = {$in: categories};
 		}
 		
 		/*var a = new Thread({
