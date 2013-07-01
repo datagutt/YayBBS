@@ -5,14 +5,14 @@ html
 		meta(name='viewport', content='width=device-width, initial-scale=1.0')
 		link(rel='stylesheet', href='/css/normalize.css')
 		link(rel='stylesheet', href='/css/forum.css')
-		title YayBBS
+		title #{settings.site_name}
 
 		body
 			div#wrapper
 				div#left-col
 					header
 						h1#logo
-							a(href='/') YayBBS
+							a(href='/') #{settings.site_name}
 					if loggedin
 						div#user-box.node
 							h4

@@ -64,4 +64,22 @@ module.exports = function(app, models){
 			}
 		});
 	});
+	
+	app.get('/thread/:id/:subject', function(req, res){
+		Thread.findOne({_id: req.params.id}).exec(function(err, thread){
+			if(thread){
+				var comments = thread.comments;
+				for(var i in comments){
+					if(comments[i].deleted){
+						delete comments[i].deleted;
+					}
+				}
+				res.send(comments);
+			}else{
+				res.render('partials/error', {
+					'message': 'This thread does not exist.'
+				});
+			}
+		})
+	});
 };
