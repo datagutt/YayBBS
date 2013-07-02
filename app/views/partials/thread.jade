@@ -6,10 +6,18 @@ block content
 				h2 #{thread.subject}
 			for comment in comments
 				article.comment
-					div.comment-user
-						span.username
-							a(href='/user/#{comment.author}') #{comment.author}
-					if comment.deleted
-						div.comment-content(style='color:red') This comment has been removed.
-					else
-						div.comment-content #{comment.content}
+					div.comment-container
+						div.comment-user
+							div.username
+								a(href='/user/#{comment.author}') #{comment.author}
+							div.time #{timeago(comment.created)}
+							div.user-avatar(style='background: url(http://placekitten.com/64/64)')
+								ul
+									li &nbsp;
+									li &nbsp;
+						div.comment-block
+							if comment.deleted
+								div.comment-content(style='color:red') This comment has been removed.
+							else
+								div.comment-content #{comment.content}
+					div(style='clear:both;')

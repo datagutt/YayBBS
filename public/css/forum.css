@@ -96,7 +96,6 @@ header {
 }
 #main-title, #error-title {
 	height: 50px;
-	line-height: 50px;
 	margin-bottom: 15px;
 	padding-top: 51px;
 }
@@ -109,6 +108,9 @@ header {
 	border-bottom: solid 1px #CCCCCC;
 	position: relative;
 }
+.comment-container {
+	padding: 0 8px 20px 2px;
+}
 .comment-user {
 	float: left;
 	width: 105px;
@@ -116,10 +118,24 @@ header {
 }
 .comment-user .username {
 	line-height: 16px;
+	font-size: 12px;
 }
-.comment-content {
+.comment-user .time {
+	font-size: 10px;
+	color: #888888;
+}
+.comment-user .user-avatar {
+	margin: 6px 0 0 0;
+	font-size: 8px;
+	padding-left: 20px;
+	background-repeat: no-repeat !important;
+	background-position: 0 1px !important;
+}
+.comment-user .user-avatar ul {
+	list-style-type: none;
+}
+.comment-block {
 	margin: 5px 0 0 125px;
-	font-size: 14px;
 }
 article, footer, .comments, form, aside {
 	padding: 1em 0 .8em;

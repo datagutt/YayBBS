@@ -28,7 +28,7 @@ app.locals.pretty = true;
 app.locals.slug = function(title){
 	return slug(title);
 };
-
+app.locals.timeago = require('timeago');
 
 var models = require(appDir + 'models')(db);
 fs.readdirSync(appDir + 'routes').forEach(function(name){
