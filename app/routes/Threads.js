@@ -1,3 +1,4 @@
+var pagination = require('pagination');
 module.exports = function(app, models){
 	var Thread = models.Thread;
 	var User = models.User;
@@ -37,6 +38,12 @@ module.exports = function(app, models){
 		
 		Thread.find(find).sort({lastUpdate: -1}).exec(function(err, threads){
 			if(threads.length > 0){
+				var paginator = new pagination.SearchPaginator({
+					prelink: '/',
+					current: 0,
+					rowsPerPage: 10,
+					totalResult: threads.length
+				});
 				var i = 0;
 				[].forEach.call(threads, function(thread){
 					User.findOne({_id: threads[i].user_id}, function(err, user){
@@ -47,7 +54,8 @@ module.exports = function(app, models){
 							res.render('partials/threads', {
 								'threads': threads,
 								'categories': categories,
-								'category': category
+								'category': category,
+								'pagination': paginator.render()
 							});
 						}
 						i++;
@@ -62,6 +70,7 @@ module.exports = function(app, models){
 	});
 	
 	app.get('/thread/:id/:subject', function(req, res){
+
 		Thread.findOne({_id: req.params.id}).exec(function(err, thread){
 			if(thread && thread.comments){
 				var comments = thread.comments;
@@ -71,7 +80,7 @@ module.exports = function(app, models){
 						if(user){
 							comments[i].author = user.username;
 						}
-						if(i == comments.length - 1){
+						if(i == comments.length - 1){				
 							res.render('partials/thread', {
 								'thread': thread,
 								'comments': comments
