@@ -1,4 +1,6 @@
 extend ../layout
+block scripts
+	script(src='/scripts/controllers/thread.js')
 block content
 	div#thread
 		div#main-title
@@ -23,6 +25,12 @@ block content
 					div(style='clear:both;')
 			if loggedin
 				form#comment-form(action='', method='post')
+					div#post-shortcuts
+						ul
+							li &middot;
+								a#url-shortcut(href='#') URL
+							li &middot;
+								a#image-shortcut(href='#') Image
 					textarea(name='comment', rows='6', cols='60')
 					span.info Posts are written in 
 						a(href='http://daringfireball.net/projects/markdown/syntax') Markdown

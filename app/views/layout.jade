@@ -43,3 +43,11 @@ html
 						block content
 				footer
 					p Copyright 2013 #{settings.site_name}
+			script(src='/scripts/YAY.js')
+			block scripts
+			script
+				var controller = window.location.pathname.split('/')[1];
+				if(YAY.controllers && YAY.controllers[controller] && typeof YAY.controllers[controller].init == 'function'){
+					YAY.queue.push(YAY.controllers[controller].init);
+				}
+				YAY.init();

@@ -17,6 +17,10 @@ module.exports = function(mongoose){
 			}
 		]
 	});
+	Thread.methods.addComment = function(id, params, cb){
+		var model = this.model('Thread').find({_id: id});
+		model.comments.push(params);
+	};
 	Thread = mongoose.model('Thread', Thread);
 	
 	return Thread;
