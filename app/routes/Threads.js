@@ -35,7 +35,6 @@ module.exports = function(app, models){
 			]
 		});
 		a.save();*/
-		
 		Thread.find(find).sort({lastUpdate: -1}).exec(function(err, threads){
 			if(threads.length > 0){
 				var paginator = new pagination.SearchPaginator({
@@ -61,16 +60,19 @@ module.exports = function(app, models){
 						i++;
 					});
 				});
-			}else{
+			}else if(categories.length == 0){
 				res.render('partials/error', {
 					'message': 'This category does not exist.'
+				});
+			}else{
+				res.render('partials/error', {
+					'message': 'This category is empty.'
 				});
 			}
 		});
 	});
 	
 	app.get('/thread/:id/:subject', function(req, res){
-
 		Thread.findOne({_id: req.params.id}).exec(function(err, thread){
 			if(thread && thread.comments){
 				var comments = thread.comments;
