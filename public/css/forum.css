@@ -108,6 +108,14 @@ header {
 	display: block;
 	border-bottom: 1px dotted #959595;
 }
+.paginator span:after {
+	visibility: hidden;
+	content: '.';
+}
+.paginator a:after {
+	visibility: hidden;
+	content: '.';
+}
 .comment {
 	margin-bottom: 2px;
 	border-bottom: solid 1px #CCCCCC;

@@ -23,6 +23,7 @@ block content
 							else
 								div.comment-content !{markdown(comment.content)}
 					div(style='clear:both;')
+			!{pagination}
 			if loggedin
 				form#comment-form(action='', method='post')
 					div#post-shortcuts

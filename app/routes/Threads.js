@@ -35,12 +35,14 @@ module.exports = function(app, models){
 			]
 		});
 		a.save();*/
-		Thread.find(find).sort({lastUpdate: -1}).exec(function(err, threads){
+		var page = req.query.page ? req.query.page : 0,
+			perPage = 10;
+		Thread.find(find).sort({lastUpdate: -1}).skip(page * perPage).limit(perPage).exec(function(err, threads){
 			if(threads.length > 0){
-				var paginator = new pagination.SearchPaginator({
+				var paginator = new pagination.ItemPaginator({
 					prelink: '/',
-					current: 0,
-					rowsPerPage: 10,
+					current: page,
+					rowsPerPage: perPage,
 					totalResult: threads.length
 				});
 				var i = 0;
@@ -73,10 +75,25 @@ module.exports = function(app, models){
 	});
 	
 	app.get('/thread/:id/:subject', function(req, res){
+		var page = req.query.page ? req.query.page : 1,
+			perPage = 5;
 		Thread.findOne({_id: req.params.id}).exec(function(err, thread){
 			if(thread && thread.comments){
-				var comments = thread.comments;
-				var i = 0;
+				var comments = thread.comments,
+					i = 0;
+				var paginator = new pagination.ItemPaginator({
+					prelink: '/thread/' + req.params.id + '/' + req.params.subject,
+					current: page,
+					rowsPerPage: perPage,
+					totalResult: comments.length
+				});
+				var offset = (page - 1) * perPage;
+				comments = comments.slice(offset, offset + perPage);
+				if(!comments.length){
+					res.render('partials/error', {
+						'message': 'This page of thread does not exist.'
+					});
+				}
 				[].forEach.call(comments, function(comment){
 					User.findOne({_id: comments[i].user_id}, function(err, user){
 						if(user){
@@ -85,7 +102,8 @@ module.exports = function(app, models){
 						if(i == comments.length - 1){				
 							res.render('partials/thread', {
 								'thread': thread,
-								'comments': comments
+								'comments': comments,
+								'pagination': paginator.render()
 							});
 						}
 						i++;
@@ -101,8 +119,8 @@ module.exports = function(app, models){
 
 	app.post('/thread/:id/:subject', function(req, res){
 		var comment = {
-			user_id: req.session.user.id,
-			content: req.body.comment
+			'user_id': req.session.user.id,
+			'content': req.body.comment
 		};
 		Thread.update({_id: req.params.id}, {$pushAll: {comments: [comment]}},{upsert:true}, function(err){
 			if(err){
