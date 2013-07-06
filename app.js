@@ -2,7 +2,8 @@ var fs = require('fs'),
 	express = require('express'),
 	app = express(),
 	db = require('mongoose'),
-	slug = require('slug');
+	slug = require('slug'),
+	markdown = require( "markdown" ).markdown;
 var config = require('./config'),
 	appDir = __dirname + '/app/';
 
@@ -29,6 +30,7 @@ app.locals.slug = function(title){
 	return slug(title);
 };
 app.locals.timeago = require('timeago');
+app.locals.markdown = markdown.toHTML;
 
 var models = require(appDir + 'models')(db);
 fs.readdirSync(appDir + 'routes').forEach(function(name){
