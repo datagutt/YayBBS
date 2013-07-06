@@ -98,4 +98,17 @@ module.exports = function(app, models){
 			}
 		})
 	});
+
+	app.post('/thread/:id/:subject', function(req, res){
+		var comment = {
+			user_id: req.session.user.id,
+			content: req.body.comment
+		};
+		Thread.update({_id: req.params.id}, {$pushAll: {comments: [comment]}},{upsert:true}, function(err){
+			if(err){
+				console.log(err);
+			}
+			res.redirect('/thread/' + req.params.id + '/' + req.params.subject +'');
+		});
+	});
 };

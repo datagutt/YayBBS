@@ -14,6 +14,7 @@ module.exports = function(app, models){
 					if(isMatch){
 						// TODO: session shit
 						req.session.user = {
+							'id': user._id,
 							'username': user.username	
 						};
 						res.redirect('/');
@@ -38,5 +39,13 @@ module.exports = function(app, models){
 		});
 		user.save();
 		res.end('lol');
+	});
+	
+	app.post('/auth/logout', function(req, res){
+		req.session.loggedin = false;
+		if(req.session.user){
+			delete req.session.user;
+		}
+		res.redirect('/');
 	});
 };
