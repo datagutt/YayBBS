@@ -25,11 +25,11 @@ module.exports = function(app, models){
 			content: 'So?',
 			comments: [
 				{
-					user_id: 2,
+					user_id: '51d167a56db736cc16000002',
 					content: 'Nothing beats homemade lasagna',
 				},
 				{
-					user_id: 3,
+					user_id: '51d167a56db736cc16000002',
 					content: 'What is the idiot above saying? Pizza is obviously the only true food.',
 				}
 			]

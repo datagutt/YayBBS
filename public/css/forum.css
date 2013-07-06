@@ -20,6 +20,11 @@ code {
 	color: #000000;
 	white-space: pre;
 }
+input, select, textarea {
+	border: 1px solid #e4e4e4;
+	border-radius: 2px;
+	padding: 3px 3px 3px 3px;
+}
 #wrapper {	
 	width: 100%;
 	margin: 0 auto;
@@ -136,6 +141,19 @@ header {
 }
 .comment-block {
 	margin: 5px 0 0 125px;
+}
+#comment-form {
+	float: left;
+	margin-bottom: 1em;
+}
+#comment-form textarea {
+	display: block;
+	height: 140px;
+	width: 100%;
+}
+#comment-form span.info {
+	display: block;
+	font-size: 12px;
 }
 article, footer, .comments, form, aside {
 	padding: 1em 0 .8em;
