@@ -21,9 +21,10 @@ block content
 							else
 								div.comment-content !{markdown(comment.content)}
 					div(style='clear:both;')
-			form#comment-form(action='', method='post')
-				textarea(name='comment', rows='6', cols='60')
-				span.info Posts are written in 
-					a(href='http://daringfireball.net/projects/markdown/syntax') Markdown
-					.
-				input(type='submit', value='Post!')
+			if loggedin
+				form#comment-form(action='', method='post')
+					textarea(name='comment', rows='6', cols='60')
+					span.info Posts are written in 
+						a(href='http://daringfireball.net/projects/markdown/syntax') Markdown
+						.
+					input(type='submit', value='Post!')
