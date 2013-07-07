@@ -35,7 +35,7 @@ module.exports = function(app, models){
 			]
 		});
 		a.save();*/
-		var page = req.query.page ? req.query.page : 0,
+		var page = req.query.page ? parseInt(req.query.page, 10) : 0,
 			perPage = 10;
 		Thread.find(find).sort({lastUpdate: -1}).skip(page * perPage).limit(perPage).exec(function(err, threads){
 			if(threads.length > 0){
@@ -75,7 +75,7 @@ module.exports = function(app, models){
 	});
 	
 	app.get('/thread/:id/:subject', function(req, res){
-		var page = req.query.page ? req.query.page : 1,
+		var page = req.query.page ? parseInt(req.query.page, 10) : 1,
 			perPage = 5;
 		Thread.findOne({_id: req.params.id}).exec(function(err, thread){
 			if(thread && thread.comments){
