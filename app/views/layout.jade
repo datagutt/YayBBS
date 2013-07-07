@@ -30,6 +30,7 @@ html
 							p
 								a(href='/auth/register') Register
 							form#login-form(action='/auth/login', method='post')
+								input(type='hidden', name='_csrf', value=token)
 								div
 									label(for='username') U:
 									input#username(type='text', name='username', tabindex='1')

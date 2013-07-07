@@ -16,11 +16,16 @@ app.use(express.bodyParser());
 app.use(express.methodOverride());
 app.use(express.cookieParser());
 app.use(express.session({secret: config.server.secret}));
+app.use(express.csrf());
 app.use(function(req, res, next){
 	app.locals.loggedin = (typeof req.session.user !== 'undefined');
 	if(req.session.user){
 		app.locals.user = req.session.user;
 	}
+	next();
+});
+app.use(function(req, res, next){
+	res.locals.token = req.session._csrf;
 	next();
 });
 app.use(app.router);

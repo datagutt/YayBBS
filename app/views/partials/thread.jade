@@ -32,6 +32,7 @@ block content
 								a#url-shortcut(href='#') URL
 							li &middot;
 								a#image-shortcut(href='#') Image
+					input(type='hidden', name='_csrf', value=token)
 					textarea(name='comment', rows='6', cols='60')
 					span.info Posts are written in 
 						a(href='http://daringfireball.net/projects/markdown/syntax') Markdown
