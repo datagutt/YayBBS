@@ -1,0 +1,13 @@
+{
+	"name": "yaybbs",
+	"version": "0.0.1",
+	"private": true,
+	"dependencies": {
+        	"express": "",
+		"mongoose": "",
+		"slug": "",
+		"markdown": "",
+		"date-format-lite": ""
+	}
+}
+
