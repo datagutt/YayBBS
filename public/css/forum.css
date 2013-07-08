@@ -163,6 +163,26 @@ header {
 	display: block;
 	font-size: 12px;
 }
+#user {
+}
+#user #user-info-box {
+	float: left;
+	width: 220px;
+}
+#user #user-info-box .box {
+	background: #F9F9F9;
+	border: 1px solid #CCC;
+	margin-bottom: 5px;
+}
+#user #user-info-box .box h3 {
+	border-bottom: 1px dotted #959595;
+	margin-top: 0px;
+	margin-bottom: 3px;
+}
+#user #latest-posts {
+	width: 80%;
+	margin-left: 18em;
+}
 article, footer, .comments, form, aside {
 	padding: 1em 0 .8em;
 }

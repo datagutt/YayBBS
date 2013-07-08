@@ -3,7 +3,7 @@ var fs = require('fs'),
 	app = express(),
 	db = require('mongoose'),
 	slug = require('slug'),
-	markdown = require( "markdown" ).markdown;
+	markdown = require('markdown').markdown;
 var config = require('./config'),
 	appDir = __dirname + '/app/';
 

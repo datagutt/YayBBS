@@ -1,0 +1,23 @@
+extend ../layout
+block content
+	div#main-title
+		h2 #{user.username}
+	div#user
+		if 'instagram' in user.services
+			div#photostream
+				From Instagram:
+		div#user-info-box
+			div.box
+				h3 #{user.username}
+				if loggedin && !user.isYou 
+					a(href='#') Add as buddy
+			div#stats.box
+				h3 Stats
+				p.
+					#{user.username} has been here since #{user.since}.
+					Since then, #{user.username} has posted #{user.threads} threads and #{user.comments} comments.
+			div.description.box
+				h3 Description
+					if user.description
+						#{user.description}
+		div#latest-posts
