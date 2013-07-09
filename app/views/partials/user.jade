@@ -21,6 +21,9 @@ block content
 				h3 Description
 					if user.description
 						#{user.description}
+			if 'twitter' in user.services
+				div.social.twitter
+					#{user.services.twitter.username}
 			if 'lastfm' in user.services
 				div.social.lastfm
 					#{user.services.lastfm.username}
