@@ -4,8 +4,9 @@ block content
 		h2 #{user.username}
 	div#user
 		if 'instagram' in user.services
-			div#photostream
-				From Instagram:
+			div.social.instagram
+					From Instagram:
+					#{user.services.instagram.username}
 		div#user-info-box
 			div.box
 				h3 #{user.username}
@@ -20,4 +21,7 @@ block content
 				h3 Description
 					if user.description
 						#{user.description}
+			if 'lastfm' in user.services
+				div.social.lastfm
+					#{user.services.lastfm.username}
 		div#latest-posts
