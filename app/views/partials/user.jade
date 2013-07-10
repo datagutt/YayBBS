@@ -23,7 +23,26 @@ block content
 						#{user.description}
 			if 'twitter' in user.services
 				div.social.twitter
-					#{user.services.twitter.username}
+					script(src='http://widgets.twimg.com/j/2/widget.js')
+					sceipt
+						new TWTR.Widget({
+							version: 2,
+							type: 'profile',
+							rpp: 5,
+							interval: 30000,
+							width: 200,
+							height: 300,
+							theme: {
+								shell: { background: '#F9F9f9', color: '#333333' },
+								tweets: { background: '#F9F9f9', color: '#333333', links: '#000000' }
+							},
+							features: {
+								scrollbar: false,
+								loop: false,
+								live: false,
+								behavior: 'all'
+							}
+						}).render().setUser('{#user.services.twitter.username]').start();
 			if 'lastfm' in user.services
 				div.social.lastfm
 					#{user.services.lastfm.username}
