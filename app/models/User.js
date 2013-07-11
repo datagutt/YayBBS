@@ -14,6 +14,7 @@ module.exports = function(mongoose){
 			type: String,
 			required: true
 		},
+		services: Object,
 		invited_by: ObjectId
 	});
 	User.pre('save', function(next){

@@ -22,27 +22,10 @@ block content
 					if user.description
 						#{user.description}
 			if 'twitter' in user.services
-				div.social.twitter
-					script(src='http://widgets.twimg.com/j/2/widget.js')
-					sceipt
-						new TWTR.Widget({
-							version: 2,
-							type: 'profile',
-							rpp: 5,
-							interval: 30000,
-							width: 200,
-							height: 300,
-							theme: {
-								shell: { background: '#F9F9f9', color: '#333333' },
-								tweets: { background: '#F9F9f9', color: '#333333', links: '#000000' }
-							},
-							features: {
-								scrollbar: false,
-								loop: false,
-								live: false,
-								behavior: 'all'
-							}
-						}).render().setUser('{#user.services.twitter.username]').start();
+				div.social.twitter 
+					a(class='twitter-timeline', width='200', height='300', href='https://twitter.com/#{user.services.twitter.username}', data-screen-name='#{user.services.twitter.username}', data-widget-id='355420673499344896', data-chrome='nofooter') Tweets by #{user.services.twitter.username}
+					script
+						!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");			
 			if 'lastfm' in user.services
 				div.social.lastfm
 					#{user.services.lastfm.username}
