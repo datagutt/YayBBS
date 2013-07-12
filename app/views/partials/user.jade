@@ -24,9 +24,16 @@ block content
 			if 'twitter' in user.services
 				div.social.twitter 
 					a(class='twitter-timeline', width='200', height='300', href='https://twitter.com/#{user.services.twitter.username}', data-screen-name='#{user.services.twitter.username}', data-widget-id='355420673499344896', data-chrome='nofooter') Tweets by #{user.services.twitter.username}
+
 					script
 						!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");			
 			if 'lastfm' in user.services
-				div.social.lastfm
-					#{user.services.lastfm.username}
-		div#latest-posts
+				div.social.lastfm.box
+					h3 Listening to...
+					if user.lastfm
+						for song in user.lastfm
+							div.song
+								span.artist #{song.artist}
+								p(style='display: inline')  - 
+								span.name #{song.name}
+			div#latest-posts
