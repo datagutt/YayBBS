@@ -1,0 +1,17 @@
+extend ../layout
+block content
+	div#main-title
+		h2 Register
+	form(method='post')
+		input(type='hidden', name='_csrf', value=token)
+		label
+			p Username
+			input(name='username')
+		label
+			p Email
+			input(name='email')
+		label
+			p Password
+			input(name='password')
+		div
+			input(type='submit', value='Welcome in!')

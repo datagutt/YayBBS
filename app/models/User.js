@@ -15,6 +15,7 @@ module.exports = function(mongoose){
 			required: true
 		},
 		services: Object,
+		invited: Boolean,
 		invited_by: ObjectId
 	});
 	User.pre('save', function(next){
@@ -47,6 +48,15 @@ module.exports = function(mongoose){
 			
 			cb(null, isMatch);
 		})	
+	};
+	User.statics.exists = function(username, cb){
+		User.findOne({'username': username}, function(err, c){
+			if(err){
+				cb(false);
+			}
+			
+			return cb(!!c);
+		})
 	};
 	User = mongoose.model('User', User);
 	
