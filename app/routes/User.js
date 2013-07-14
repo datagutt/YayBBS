@@ -2,6 +2,7 @@ require('date-format-lite');
 var request = require('request');
 module.exports = function(app, models){
 	var Thread = models.Thread;
+	var Comment = models.Comment;
 	var User = models.User;
 	
 	var lastfm = function(username, cb){
@@ -57,17 +58,19 @@ module.exports = function(app, models){
 				}
 				var since = date.format('MMMM, YYYY');
 				Thread.count({user_id: user.id}, function(err, threadCount){
-					lastfm(user.services.lastfm ? user.services.lastfm.username : '', function(err, data){
-						res.render('partials/user', {
-							'user': {
-								'isYou': (req.session.user && user.username == req.session.user.username),
-								'username': user.username,
-								'since': since,
-								'threads': threadCount || 0,
-								'comments': 0,
-								'services': user.services || {},
-								'lastfm': data
-							}
+					Comment.count({user_id: user.id}, function(err, commentCount){
+						lastfm((user.services && user.services.lastfm) ? user.services.lastfm.username : '', function(err, data){
+							res.render('partials/user', {
+								'user': {
+									'isYou': (req.session.user && user.username == req.session.user.username),
+									'username': user.username,
+									'since': since,
+									'threads': threadCount || 0,
+									'comments': commentCount || 0,
+									'services': user.services || {},
+									'lastfm': data
+								}
+							});
 						});
 					});
 				});

@@ -1,6 +1,7 @@
 var pagination = require('pagination');
 module.exports = function(app, models){
 	var Thread = models.Thread;
+	var Comment = models.Comment;
 	var User = models.User;
 	
 	app.get('/', function(req, res){
@@ -22,19 +23,16 @@ module.exports = function(app, models){
 		/*var a = new Thread({
 			user_id: '51d167a56db736cc16000002', 
 			subject: 'What is your favorite food?',
-			content: 'So?',
-			comments: [
-				{
-					user_id: '51d167a56db736cc16000002',
-					content: 'Nothing beats homemade lasagna',
-				},
-				{
-					user_id: '51d167a56db736cc16000002',
-					content: 'What is the idiot above saying? Pizza is obviously the only true food.',
-				}
-			]
+			content: 'So?'
 		});
 		a.save();*/
+		/*var b = new Comment({
+			user_id: '51d167a56db736cc16000002',
+			thread_id: '51d80d85845c7e0000000008',
+			content: 'So?'
+		});
+		b.save();*/
+		
 		var page = req.query.page ? parseInt(req.query.page, 10) : 0,
 			perPage = 10;
 		Thread.find(find).sort({lastUpdate: -1}).skip(page * perPage).limit(perPage).exec(function(err, threads){
@@ -46,7 +44,7 @@ module.exports = function(app, models){
 					totalResult: threads.length
 				});
 				var i = 0;
-				[].forEach.call(threads, function(thread){
+				threads.forEach(function(thread){
 					User.findOne({_id: threads[i].user_id}, function(err, user){
 						if(user){
 							threads[i].author = user.username;
@@ -76,53 +74,55 @@ module.exports = function(app, models){
 	
 	app.get('/thread/:id/:subject', function(req, res){
 		var page = req.query.page ? parseInt(req.query.page, 10) : 1,
-			perPage = 5;
-		Thread.findOne({_id: req.params.id}).exec(function(err, thread){
-			if(thread && thread.comments){
-				var comments = thread.comments,
-					i = 0;
+			perPage = 5,
+			offset = (page - 1) * perPage;
+		Comment.find({thread_id: req.params.id}).skip(offset).limit(perPage).exec(function(err, comments){
+			if(comments && comments.length > 0){
+				var i = 0;
 				var paginator = new pagination.ItemPaginator({
 					prelink: '/thread/' + req.params.id + '/' + req.params.subject,
 					current: page,
 					rowsPerPage: perPage,
 					totalResult: comments.length
 				});
-				var offset = (page - 1) * perPage;
-				comments = comments.slice(offset, offset + perPage);
-				if(!comments.length){
-					res.render('partials/error', {
-						'message': 'This page of thread does not exist.'
-					});
-				}
-				[].forEach.call(comments, function(comment){
+				comments.forEach(function(comment){
 					User.findOne({_id: comments[i].user_id}, function(err, user){
 						if(user){
 							comments[i].author = user.username;
 						}
-						if(i == comments.length - 1){				
-							res.render('partials/thread', {
-								'thread': thread,
-								'comments': comments,
-								'pagination': paginator.render()
+						if(i == comments.length - 1){			
+							Thread.findOne({_id: comment.thread_id}, function(err, thread){
+								res.render('partials/thread', {
+									'thread': thread,
+									'comments': comments,
+									'pagination': paginator.render()
+								});
 							});
 						}
 						i++;
 					});
-				})
-			}else{
-				res.render('partials/error', {
-					'message': 'This thread does not exist.'
 				});
+			}else{
+				if(page > 0 && offset > 0){
+					res.render('partials/error', {
+						'message': 'This page of thread does not exist.'
+					});
+				}else{
+					res.render('partials/error', {
+						'message': 'This thread does not exist.'
+					});
+				}
 			}
-		})
+		});
 	});
 
 	app.post('/thread/:id/:subject', function(req, res){
-		var comment = {
+		var comment = new Comment({
 			'user_id': req.session.user.id,
+			'thread_id': req.params.id,
 			'content': req.body.comment
-		};
-		Thread.update({_id: req.params.id}, {$pushAll: {comments: [comment]}},{upsert:true}, function(err){
+		});
+		comment.save(function(err){
 			if(err){
 				console.log(err);
 			}
