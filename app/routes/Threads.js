@@ -79,27 +79,29 @@ module.exports = function(app, models){
 		Comment.find({thread_id: req.params.id}).sort({created: 1}).skip(offset).limit(perPage).exec(function(err, comments){
 			if(comments && comments.length > 0){
 				var i = 0;
-				var paginator = new pagination.ItemPaginator({
-					prelink: '/thread/' + req.params.id + '/' + req.params.subject,
-					current: page,
-					rowsPerPage: perPage,
-					totalResult: comments.length
-				});
-				comments.forEach(function(comment){
-					User.findOne({_id: comment.user_id}, function(err, user){
-						if(user){
-							comments[i].author = user.username;
-						}
-						if(i == comments.length - 1){			
-							Thread.findOne({_id: comment.thread_id}, function(err, thread){
-								res.render('partials/thread', {
-									'thread': thread,
-									'comments': comments,
-									'pagination': paginator.render()
+				Comment.count({thread_id: req.params.id}, function(err, commentCount){
+					var paginator = new pagination.ItemPaginator({
+						prelink: '/thread/' + req.params.id + '/' + req.params.subject,
+						current: page,
+						rowsPerPage: perPage,
+						totalResult: commentCount
+					});
+					comments.forEach(function(comment){
+						User.findOne({_id: comment.user_id}, function(err, user){
+							if(user){
+								comments[i].author = user.username;
+							}
+							if(i == comments.length - 1){			
+								Thread.findOne({_id: comment.thread_id}, function(err, thread){
+									res.render('partials/thread', {
+										'thread': thread,
+										'comments': comments,
+										'pagination': paginator.render()
+									});
 								});
-							});
-						}
-						i++;
+							}
+							i++;
+						});
 					});
 				});
 			}else{
