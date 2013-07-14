@@ -36,6 +36,11 @@ app.locals.slug = function(title){
 };
 app.locals.timeago = require('timeago');
 app.locals.markdown = markdown.toHTML;
+app.locals.categories = [];
+
+for(key in config.categories){
+	app.locals.categories.push(key);
+}
 
 var models = require(appDir + 'models')(db);
 fs.readdirSync(appDir + 'routes').forEach(function(name){

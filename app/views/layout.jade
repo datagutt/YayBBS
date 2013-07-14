@@ -39,6 +39,13 @@ html
 									label(for='password') P:
 									input#password(type='password', name='password', tabindex='2')
 									a#forgot-password(href='#') Forgot it?
+					div#categories-box.node
+						h3
+							a(href='/') Categories
+						ul
+							for category in categories
+								li.category 
+									a(href='/?c=#{category}') #{category}
 				div#right-col
 					div#content 
 						block content

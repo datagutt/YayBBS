@@ -95,6 +95,18 @@ header {
 #user-box li {
 	line-height: 10px;
 }
+#categories-box {
+	background-color: #E9F8FE;
+}
+#categories-box ul {
+	margin: 0px;
+	padding: 0px;
+}
+#categories-box li {
+	color: #77777;
+	font-size: 10px;
+	list-style-type: none;
+}
 #right-col {
 	margin: 25px 0 0 240px;
 	padding: 0 25px 50px 0;
