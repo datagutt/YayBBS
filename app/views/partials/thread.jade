@@ -21,7 +21,7 @@ block content
 							if comment.deleted
 								div.comment-content(style='color:red') This comment has been removed.
 							else
-								div.comment-content !{markdown(comment.content)}
+								div.comment-content !{xss(markdown(comment.content))}
 					div(style='clear:both;')
 			!{pagination}
 			if loggedin

@@ -3,7 +3,8 @@ var fs = require('fs'),
 	app = express(),
 	db = require('mongoose'),
 	slug = require('slug'),
-	markdown = require('markdown').markdown;
+	markdown = require('markdown').markdown,
+	sanitize = require('validator').sanitize;
 var config = require('./config'),
 	appDir = __dirname + '/app/';
 
@@ -33,6 +34,9 @@ app.use(app.router);
 app.locals.pretty = true;
 app.locals.slug = function(title){
 	return slug(title);
+};
+app.locals.xss = function(str){
+	return sanitize(str).xss();
 };
 app.locals.timeago = require('timeago');
 app.locals.markdown = markdown.toHTML;
