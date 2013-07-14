@@ -76,7 +76,7 @@ module.exports = function(app, models){
 		var page = req.query.page ? parseInt(req.query.page, 10) : 1,
 			perPage = 5,
 			offset = (page - 1) * perPage;
-		Comment.find({thread_id: req.params.id}).skip(offset).limit(perPage).exec(function(err, comments){
+		Comment.find({thread_id: req.params.id}).sort({created: 1}).skip(offset).limit(perPage).exec(function(err, comments){
 			if(comments && comments.length > 0){
 				var i = 0;
 				var paginator = new pagination.ItemPaginator({
