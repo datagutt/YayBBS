@@ -86,7 +86,7 @@ module.exports = function(app, models){
 					totalResult: comments.length
 				});
 				comments.forEach(function(comment){
-					User.findOne({_id: comments[i].user_id}, function(err, user){
+					User.findOne({_id: comment.user_id}, function(err, user){
 						if(user){
 							comments[i].author = user.username;
 						}
