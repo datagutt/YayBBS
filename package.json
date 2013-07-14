@@ -3,11 +3,12 @@
 	"version": "0.0.1",
 	"private": true,
 	"dependencies": {
-        	"express": "",
+        "express": "",
 		"mongoose": "",
 		"slug": "",
 		"markdown": "",
-		"date-format-lite": ""
+		"date-format-lite": "",
+		"request": ""
 	}
 }
 
