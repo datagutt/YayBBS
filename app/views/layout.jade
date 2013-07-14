@@ -23,6 +23,7 @@ html
 									a#preferences(href='/preferences') Preferences
 								li
 									form(action='/auth/logout', method='post')
+										input(type='hidden', name='_csrf', value=token)
 										input#logout_btn(type='submit', value='Log out!')
 					else
 						div#login-box.node
