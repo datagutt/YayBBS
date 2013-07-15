@@ -8,6 +8,6 @@ block content
 	for thread in threads
 		article.thread
 			b 
-				a(href='/thread/#{thread.id}/#{slug(thread.subject)}') #{thread.subject}
+				a(href='/thread/#{thread._id}/#{slug(thread.subject)}') #{thread.subject}
 			span  by #{thread.author} on #{thread.created}
 	!{pagination}

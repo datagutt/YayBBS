@@ -35,7 +35,7 @@ module.exports = function(app, models){
 		
 		var page = req.query.page ? parseInt(req.query.page, 10) : 0,
 			perPage = 10;
-		Thread.find(find).sort({lastUpdate: -1}).skip(page * perPage).limit(perPage).exec(function(err, threads){
+		Thread.find(find).sort({lastUpdate: -1}).skip(page * perPage).limit(perPage).lean().exec(function(err, threads){
 			if(threads.length > 0){
 				var paginator = new pagination.ItemPaginator({
 					prelink: '/',
@@ -45,7 +45,7 @@ module.exports = function(app, models){
 				});
 				var i = 0;
 				threads.forEach(function(thread){
-					User.findOne({_id: threads[i].user_id}, function(err, user){
+					User.findOne({_id: threads[i].user_id}).lean().exec(function(err, user){
 						if(user){
 							threads[i].author = user.username;
 						}
@@ -76,7 +76,7 @@ module.exports = function(app, models){
 		var page = req.query.page ? parseInt(req.query.page, 10) : 1,
 			perPage = 5,
 			offset = (page - 1) * perPage;
-		Comment.find({thread_id: req.params.id}).sort({created: 1}).skip(offset).limit(perPage).exec(function(err, comments){
+		Comment.find({thread_id: req.params.id}).sort({created: 1}).skip(offset).limit(perPage).lean().exec(function(err, comments){
 			if(comments && comments.length > 0){
 				var i = 0;
 				Comment.count({thread_id: req.params.id}, function(err, commentCount){
@@ -87,12 +87,12 @@ module.exports = function(app, models){
 						totalResult: commentCount
 					});
 					comments.forEach(function(comment){
-						User.findOne({_id: comment.user_id}, function(err, user){
+						User.findOne({_id: comment.user_id}).lean().exec(function(err, user){
 							if(user){
 								comments[i].author = user.username;
 							}
 							if(i == comments.length - 1){			
-								Thread.findOne({_id: comment.thread_id}, function(err, thread){
+								Thread.findOne({_id: comment.thread_id}).lean().exec(function(err, thread){
 									res.render('partials/thread', {
 										'thread': thread,
 										'comments': comments,

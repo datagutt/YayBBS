@@ -43,7 +43,7 @@ module.exports = function(app, models){
 	};
 	
 	app.get('/user/:username', function(req, res){
-		User.findOne({username: req.params.username}, function(err, user){
+		User.findOne({username: req.params.username}).lean().exec(function(err, user){
 			if(err){
 				res.render('partials/error', {
 					'message': 'An error occured.'
