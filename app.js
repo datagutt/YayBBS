@@ -35,11 +35,19 @@ app.locals.pretty = true;
 app.locals.slug = function(title){
 	return slug(title);
 };
-app.locals.xss = function(str){
-	return sanitize(str).xss();
+var meify = function(str, user){
+	return str.replace(/(^|\<[\w]+\s?\/?\>|[\s])\/me/, '<span class="me">* <a href="/user/' + user + '">'+ user + '</a></span>');
+};
+app.locals.formatPost = function(str, user){
+	// Markdown-ify!
+	str = markdown.toHTML(str);
+	// Me-ify
+	str = meify(str, user);
+	// Sanitize to protect from XSS
+	str = sanitize(str).xss();
+	return str;
 };
 app.locals.timeago = require('timeago');
-app.locals.markdown = markdown.toHTML;
 app.locals.categories = [];
 
 for(key in config.categories){
