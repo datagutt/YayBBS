@@ -6,12 +6,14 @@ var fs = require('fs'),
 	markdown = require('markdown').markdown,
 	sanitize = require('validator').sanitize;
 var config = require('./config'),
-	appDir = __dirname + '/app/';
+	appDir = __dirname + '/app/',
+	themeDir = './themes/' +  config.site.theme;
 
 app.set('views', appDir + '/views');
 app.set('view engine', 'jade');
 app.set('site_name', config.site.name);
 app.use(express.static(__dirname + '/public'));
+app.use(express.static(themeDir + '/public'));
 
 app.use(express.bodyParser());
 app.use(express.methodOverride());
