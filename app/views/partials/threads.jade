@@ -7,7 +7,10 @@ block content
 			h2 #{category}
 	for thread in threads
 		article.thread
-			b 
-				a(href='/thread/#{thread._id}/#{slug(thread.subject)}') #{thread.subject}
-			span  by #{thread.author} on #{thread.created}
+			.subject
+				b 
+					a(href='/thread/#{thread._id}/#{slug(thread.subject)}') #{thread.subject}
+			.info
+				span.category #{thread.category}
+				span.author  Started by #{thread.author}
 	!{pagination}

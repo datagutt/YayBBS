@@ -162,7 +162,14 @@ module.exports = function(app, models){
 				if(err){
 					console.log(err);
 				}
-				res.redirect('/thread/' + req.params.id + '/' + req.params.subject +'');
+				Thread.findOne({_id: req.params.id}, function(err, thread){
+					if(thread){
+						thread.lastUpdate = new Date();
+						thread.save(function(){
+							res.redirect('/thread/' + req.params.id + '/' + req.params.subject);
+						});
+					}
+				});
 			});
 		}else{
 			res.render('partials/error', {
