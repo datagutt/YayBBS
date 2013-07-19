@@ -10,7 +10,7 @@ var config = require('./config'),
 
 app.set('views', appDir + '/views');
 app.set('view engine', 'jade');
-app.set('site_name', 'Forum');
+app.set('site_name', config.site.name);
 app.use(express.static(__dirname + '/public'));
 
 app.use(express.bodyParser());

@@ -84,7 +84,7 @@ module.exports = function(app, models){
 	app.all('/auth/register', function(req, res){
 		var user = {},
 			invite_token = req.query.invite_token;
-		if(!config.server.signups_allowed && invite_token){
+		if(!config.site.signups_allowed && invite_token){
 			user.invited = true;
 			
 			Invite.valid(invite_token, function(err, valid){
@@ -96,7 +96,7 @@ module.exports = function(app, models){
 					});
 				}
 			});
-		}else if(config.server.signups_allowed){
+		}else if(config.site.signups_allowed){
 			var user = {};
 			user.invited = false;
 			makeUser(req, res, models, user, '');
