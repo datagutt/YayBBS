@@ -3,6 +3,7 @@ module.exports = function(app, models){
 	var Thread = models.Thread;
 	var Comment = models.Comment;
 	var User = models.User;
+	var config = require('../../config');
 	
 	app.get('/', function(req, res){
 		var config = require('../../config'),
@@ -20,55 +21,45 @@ module.exports = function(app, models){
 			find['category'] = {$in: categories};
 		}
 		
-		/*var a = new Thread({
-			user_id: '51d167a56db736cc16000002', 
-			subject: 'What is your favorite food?',
-			content: 'So?'
-		});
-		a.save();*/
-		/*var b = new Comment({
-			user_id: '51d167a56db736cc16000002',
-			thread_id: '51d80d85845c7e0000000008',
-			content: 'So?'
-		});
-		b.save();*/
-		
-		var page = req.query.page ? parseInt(req.query.page, 10) : 0,
-			perPage = 10;
-		Thread.find(find).sort({lastUpdate: -1}).skip(page * perPage).limit(perPage).lean().exec(function(err, threads){
-			if(threads.length > 0){
-				var paginator = new pagination.ItemPaginator({
-					prelink: '/',
-					current: page,
-					rowsPerPage: perPage,
-					totalResult: threads.length
-				});
-				var i = 0;
-				threads.forEach(function(thread){
-					User.findOne({_id: threads[i].user_id}).lean().exec(function(err, user){
-						if(user){
-							threads[i].author = user.username;
-						}
-						if(i == threads.length - 1){
-							res.render('partials/threads', {
-								'threads': threads,
-								'categories': categories,
-								'category': category,
-								'pagination': paginator.render()
-							});
-						}
-						i++;
+		var page = req.query.page ? parseInt(req.query.page, 10) : 1,
+			perPage = 10,
+			offset = (page - 1) * perPage;
+		Thread.find(find).sort({lastUpdate: -1}).skip(offset).limit(perPage).lean().exec(function(err, threads){
+			Thread.count({}, function(err, threadCount){
+				if(threads.length > 0){
+					var paginator = new pagination.ItemPaginator({
+						prelink: '/',
+						current: page,
+						rowsPerPage: perPage,
+						totalResult: threadCount
 					});
-				});
-			}else if(categories.length == 0){
-				res.render('partials/error', {
-					'message': 'This category does not exist.'
-				});
-			}else{
-				res.render('partials/error', {
-					'message': 'This category is empty.'
-				});
-			}
+					var i = 0;
+					threads.forEach(function(thread){
+						User.findOne({_id: threads[i].user_id}).lean().exec(function(err, user){
+							if(user){
+								threads[i].author = user.username;
+							}
+							if(i == threads.length - 1){
+								res.render('partials/threads', {
+									'threads': threads,
+									'categories': categories,
+									'category': category,
+									'pagination': paginator.render()
+								});
+							}
+							i++;
+						});
+					});
+				}else if(categories.length == 0){
+					res.render('partials/error', {
+						'message': 'This category does not exist.'
+					});
+				}else{
+					res.render('partials/error', {
+						'message': 'This category is empty.'
+					});
+				}
+			});
 		});
 	});
 	
@@ -117,18 +108,66 @@ module.exports = function(app, models){
 			}
 		});
 	});
+	
+	app.get('/newthread', function(req, res){
+		if(app.locals.loggedin){
+			res.render('partials/newthread');
+		}else{
+			res.render('partials/error', {
+				'message': 'You are not logged in.'
+			});
+		}
+	});
+	
+	app.post('/newthread', function(req, res){
+		if(app.locals.loggedin){
+			var categories = config.categories,
+				category = req.body.category;
+			var thread = new Thread({
+				'user_id': req.session.user.id,
+				'category': category in categories ? category : 'Discussions',
+				'subject': req.body.subject
+			});
+			thread.save(function(err){
+				if(err){
+					console.log(err);
+				}
+				var comment = new Comment({
+					'user_id': req.session.user.id,
+					'thread_id': thread.id,
+					'content': req.body.comment
+				});
+				comment.save(function(err){
+					if(err){
+						console.log(err);
+					}
+					res.redirect('/thread/' + thread.id + '/' + req.params.subject +'');
+				});
+			});
+		}else{
+			res.render('partials/error', {
+				'message': 'You are not logged in.'
+			});
+		}
+	});
 
 	app.post('/thread/:id/:subject', function(req, res){
-		var comment = new Comment({
-			'user_id': req.session.user.id,
-			'thread_id': req.params.id,
-			'content': req.body.comment
-		});
-		comment.save(function(err){
-			if(err){
-				console.log(err);
-			}
-			res.redirect('/thread/' + req.params.id + '/' + req.params.subject +'');
-		});
+		if(app.locals.loggedin){
+			var comment = new Comment({
+				'user_id': req.session.user.id,
+				'thread_id': req.params.id,
+				'content': req.body.comment
+			});
+			comment.save(function(err){
+				if(err){
+					console.log(err);
+				}
+				res.redirect('/thread/' + req.params.id + '/' + req.params.subject +'');
+			});
+		}else{
+			res.render('partials/error', {
+				'message': 'You are not logged in.'
+			});
+		}
 	});
 };
