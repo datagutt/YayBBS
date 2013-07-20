@@ -131,6 +131,16 @@ header {
 .thread {
 	
 }
+.thread .info .category {
+	width: 10%;
+	background: #494949;
+	margin-right: 10px;
+	padding: 3px 0px 3px;
+}
+.thread .info .category a {
+	color: #FFF;
+	text-decoration: none;
+}
 .comment {
 	margin-bottom: 2px;
 	border-bottom: solid 1px #CCCCCC;

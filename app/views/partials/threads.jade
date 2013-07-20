@@ -11,6 +11,7 @@ block content
 				b 
 					a(href='/thread/#{thread._id}/#{slug(thread.subject)}') #{thread.subject}
 			.info
-				span.category #{thread.category}
+				span.category
+					a(href='/?c=#{thread.category}') #{thread.category}
 				span.author  Started by #{thread.author}
 	!{pagination}
