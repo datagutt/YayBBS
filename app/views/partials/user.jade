@@ -12,6 +12,9 @@ block content
 				h3 #{user.username}
 				if loggedin && !user.isYou 
 					a(href='#') Add as buddy
+				for service in user.services
+					p #{service.name}: 
+						a(href='#{service.url}') #{service.username}
 			div#stats.box
 				h3 Stats
 				p.
