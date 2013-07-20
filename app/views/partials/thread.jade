@@ -11,9 +11,9 @@ block content
 					div.comment-container
 						div.comment-user
 							div.username
-								a(href='/user/#{comment.author}') #{comment.author}
+								a(href='/user/#{comment.user.username}') #{comment.user.username}
 							div.time #{timeago(comment.created)}
-							div.user-avatar(style='background: url(http://placekitten.com/64/64)')
+							div.user-avatar(style='background: url(#{comment.user.avatar ? comment.user.avatar : 'http://placekitten.com/64/64'}) no-repeat;width:64px;height:64px;')
 								ul
 									li &nbsp;
 									li &nbsp;
@@ -21,7 +21,7 @@ block content
 							if comment.deleted
 								div.comment-content(style='color:red') This comment has been removed.
 							else
-								div.comment-content !{formatPost(comment.content, comment.author)}
+								div.comment-content !{formatPost(comment.content, comment.user.username)}
 					div(style='clear:both;')
 			!{pagination}
 			if loggedin

@@ -23,7 +23,7 @@ app.use(express.csrf());
 app.use(function(req, res, next){
 	app.locals.loggedin = (typeof req.session.user !== 'undefined');
 	if(req.session.user){
-		app.locals.user = req.session.user;
+		app.locals.sUser = req.session.user;
 	}
 	next();
 });

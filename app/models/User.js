@@ -5,6 +5,7 @@ module.exports = function(mongoose){
 		ObjectId = Schema.ObjectId,
 		SALT_WORK_FACTOR = 10;
 	var User = new Schema({
+		realname: String,
 		username: {
 			type: String,
 			required: true,
@@ -14,6 +15,7 @@ module.exports = function(mongoose){
 			type: String,
 			required: true
 		},
+		avatar: String,
 		services: Object,
 		invited: Boolean,
 		invited_by: ObjectId

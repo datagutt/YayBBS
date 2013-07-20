@@ -64,7 +64,10 @@ module.exports = function(app, models){
 						// TODO: session shit
 						req.session.user = {
 							'id': user._id,
-							'username': user.username	
+							'realname': user.realname,
+							'username': user.username,
+							'avatar': user.avatar,
+							'services': user.services
 						};
 						res.redirect('/');
 					}else{

@@ -10,8 +10,12 @@ block content
 		div#user-info-box
 			div.box
 				h3 #{user.username}
+				if loggedin && user.isYou
+					a(href='/preferences') Preferences 
 				if loggedin && !user.isYou 
 					a(href='#') Add as buddy
+				if user.realname
+					p Real name: #{user.realname}
 				for service in user.services
 					p #{service.name}: 
 						a(href='#{service.url}') #{service.username}

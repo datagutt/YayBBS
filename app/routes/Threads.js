@@ -80,7 +80,7 @@ module.exports = function(app, models){
 					comments.forEach(function(comment){
 						User.findOne({_id: comment.user_id}).lean().exec(function(err, user){
 							if(user){
-								comments[i].author = user.username;
+								comments[i].user = user;
 							}
 							if(i == comments.length - 1){			
 								Thread.findOne({_id: comment.thread_id}).lean().exec(function(err, thread){

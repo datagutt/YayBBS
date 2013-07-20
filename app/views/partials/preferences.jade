@@ -1,0 +1,16 @@
+extend ../layout
+block content
+	div#main-title
+		h2 Edit profile
+	div#edit-profile
+		form(method='POST')
+			input(type='hidden', name='_csrf', value=token)
+			h3 Personal info
+			label
+				p Real name
+				input(type='text', name='realname', value='#{sUser.realname ? sUser.realname : ''}')
+			label
+				p Avatar URL
+				input(type='text', name='avatar', value='#{sUser.avatar ? sUser.avatar : ''}')
+			div
+				input(type='submit', value='Update info!')

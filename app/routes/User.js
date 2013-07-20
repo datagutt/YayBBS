@@ -1,5 +1,7 @@
 require('date-format-lite');
-var request = require('request');
+var request = require('request'),
+	check = require('validator').check,
+	sanitize = require('validator').sanitize;
 module.exports = function(app, models){
 	var Thread = models.Thread;
 	var Comment = models.Comment;
@@ -63,7 +65,9 @@ module.exports = function(app, models){
 							res.render('partials/user', {
 								'user': {
 									'isYou': (req.session.user && user.username == req.session.user.username),
+									'realname': user.realname,
 									'username': user.username,
+									'avatar': user.avatar,
 									'since': since,
 									'threads': threadCount || 0,
 									'comments': commentCount || 0,
@@ -80,5 +84,40 @@ module.exports = function(app, models){
 				});
 			}
 		});
+	});
+	
+	app.get('/preferences', function(req, res){
+		if(app.locals.loggedin){
+			res.render('partials/preferences');
+		}else{
+			res.render('partials/error', {
+				'message': 'You are not logged in.'
+			});
+		}
+	});
+	
+	app.post('/preferences', function(req, res){
+		if(app.locals.loggedin){
+			User.findOne({_id: req.session.user.id}, function(err, user){
+				if(req.body.realname){
+					user.realname = req.session.user.realname = sanitize(req.body.realname).escape();
+				}
+				if(req.body.avatar){
+					// WTF was the coder of this library thinking?
+					try{
+						if(check(req.body.avatar).isUrl()){
+							user.avatar = req.session.user.avatar =  sanitize(req.body.avatar).escape();
+						}
+					}catch(e){}
+				}
+				user.save(function(){
+					res.redirect('/preferences');
+				});
+			});
+		}else{
+			res.render('partials/error', {
+				'message': 'You are not logged in.'
+			});
+		}
 	});
 };
