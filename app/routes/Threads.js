@@ -35,7 +35,7 @@ module.exports = function(app, models){
 					});
 					var i = 0;
 					threads.forEach(function(thread){
-						User.findOne({_id: threads[i].user_id}).lean().exec(function(err, user){
+						User.findOne({_id: thread.user_id}).lean().exec(function(err, user){
 							if(user){
 								threads[i].author = user.username;
 							}
