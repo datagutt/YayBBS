@@ -1,4 +1,6 @@
 extend ../layout
+block title
+	title #{thread.subject} | #{settings.site_name}
 block scripts
 	script(src='/scripts/controllers/thread.js')
 block content

@@ -5,8 +5,8 @@ html
 		meta(name='viewport', content='width=device-width, initial-scale=1.0')
 		link(rel='stylesheet', href='/css/normalize.css')
 		link(rel='stylesheet', href='/css/forum.css')
-		title #{settings.site_name}
-
+		block title
+			title #{settings.site_name}
 		body
 			div#wrapper
 				div#left-col

@@ -1,4 +1,9 @@
 extend ../layout
+block title
+	if category == undefined
+		title All threads | #{settings.site_name}
+	else
+		title #{category} | #{settings.site_name}
 block content
 	div#main-title
 		if category == undefined
