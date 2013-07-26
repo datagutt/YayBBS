@@ -21,7 +21,7 @@ block content
 									li &nbsp;
 						div.comment-block
 							if comment.deleted
-								div.comment-content(style='color:red') This comment has been removed.
+								div.comment-content(style='color:red') #{__('This comment has been removed.')}
 							else
 								div.comment-content !{formatPost(comment.content, comment.user.username)}
 					div(style='clear:both;')
@@ -33,10 +33,10 @@ block content
 							li &middot;
 								a#url-shortcut(href='#') URL
 							li &middot;
-								a#image-shortcut(href='#') Image
+								a#image-shortcut(href='#') #{__('Image')}
 					input(type='hidden', name='_csrf', value=token)
 					textarea(name='comment', rows='6', cols='60')
-					span.info Posts are written in 
+					span.info #{__('Posts are written in')} 
 						a(href='http://daringfireball.net/projects/markdown/syntax') Markdown
 						.
 					input(type='submit', value='Post!')

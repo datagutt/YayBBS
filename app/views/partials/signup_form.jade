@@ -1,18 +1,19 @@
 extend ../layout
+block title
 	title Register | #{settings.site_name}
 block content
 	div#main-title
-		h2 Register
+		h2 #{__('Register')}
 	form(method='post')
 		input(type='hidden', name='_csrf', value=token)
 		label
-			p Username
+			p #{__('Username')}
 			input(name='username')
 		label
-			p Email
+			p #{__('Email')}
 			input(type='email', name='email')
 		label
-			p Password
+			p #{__('Password')}
 			input(type='password', name='password')
 		div
-			input(type='submit', value='Welcome in!')
+			input(type='submit', value=__('Welcome in!'))

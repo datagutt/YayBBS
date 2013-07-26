@@ -8,15 +8,15 @@ var makeUser = function(req, res, models, user, token){
 		var errors = [];
 		
 		if(username.length == 0){
-			errors.push('Username must contain more than 1 character');
+			errors.push(res.__('Username must contain more than 1 character'));
 		}
 		
 		if(password.length < 5){
-			errors.push('Password must contain more than 5 characters');
+			errors.push(res.__('Password must contain more than 5 characters'));
 		}
 		User.exists(username, function(taken){
 			if(taken){
-				errors.push('Username is already registered');
+				errors.push(res.__('Username is already registered'));
 			}
 		
 			if(errors.length == 0){
@@ -72,13 +72,13 @@ module.exports = function(app, models){
 						res.redirect('/');
 					}else{
 						res.render('partials/error', {
-							message: 'Wrong username or password'
+							message: res.__('Wrong username or password')
 						});
 					}
 				});
 			}else{
 				res.render('partials/error', {
-					message: 'Wrong username or password'
+					message: res.__('Wrong username or password')
 				});
 			}
 		});
@@ -95,7 +95,7 @@ module.exports = function(app, models){
 					makeUser(req, res, models, user, invite_token);
 				}else{
 					res.render('partials/error', {
-						'message': 'Invalid invite provided'
+						'message': res.__('Invalid invite provided')
 					});
 				}
 			});
@@ -105,7 +105,7 @@ module.exports = function(app, models){
 			makeUser(req, res, models, user, '');
 		}else{
 			res.render('partials/error', {
-				'message': 'Signups are not allowed'
+				'message': res.__('Signups are not allowed')
 			});
 		}
 	});

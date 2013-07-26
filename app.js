@@ -4,10 +4,16 @@ var fs = require('fs'),
 	db = require('mongoose'),
 	slug = require('slug'),
 	markdown = require('markdown').markdown,
-	sanitize = require('validator').sanitize;
+	sanitize = require('validator').sanitize,
+	i18n = require('i18n');
 var config = require('./config'),
 	appDir = __dirname + '/app/',
 	themeDir = './themes/' +  config.site.theme;
+
+i18n.configure({
+	locales: ['en'],
+	directory: __dirname + '/locales'
+});
 
 app.set('views', appDir + '/views');
 app.set('view engine', 'jade');
@@ -31,6 +37,7 @@ app.use(function(req, res, next){
 	res.locals.token = req.session._csrf;
 	next();
 });
+app.use(i18n.init);
 app.use(app.router);
 
 app.locals.pretty = true;
@@ -69,7 +76,7 @@ fs.readdirSync(appDir + 'routes').forEach(function(name){
 app.get('*', function(req, res){
 	res.status(404);
 	res.render('partials/error', {
-		message: 'Page not found'
+		message: res.__('Page not found')
 	});
 });
 

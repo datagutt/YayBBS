@@ -52,11 +52,11 @@ module.exports = function(app, models){
 					});
 				}else if(categories.length == 0){
 					res.render('partials/error', {
-						'message': 'This category does not exist.'
+						'message': res.__('This category does not exist.')
 					});
 				}else{
 					res.render('partials/error', {
-						'message': 'This category is empty.'
+						'message': res.__('This category is empty.')
 					});
 				}
 			});
@@ -98,11 +98,11 @@ module.exports = function(app, models){
 			}else{
 				if(page > 0 && offset > 0){
 					res.render('partials/error', {
-						'message': 'This page of thread does not exist.'
+						'message': res.__('This page of thread does not exist.')
 					});
 				}else{
 					res.render('partials/error', {
-						'message': 'This thread does not exist.'
+						'message': res.__('This thread does not exist.')
 					});
 				}
 			}
@@ -114,7 +114,7 @@ module.exports = function(app, models){
 			res.render('partials/newthread');
 		}else{
 			res.render('partials/error', {
-				'message': 'You are not logged in.'
+				'message': res.__('You are not logged in.')
 			});
 		}
 	});
@@ -146,7 +146,7 @@ module.exports = function(app, models){
 			});
 		}else{
 			res.render('partials/error', {
-				'message': 'You are not logged in.'
+				'message': res.__('You are not logged in.')
 			});
 		}
 	});
@@ -173,7 +173,7 @@ module.exports = function(app, models){
 			});
 		}else{
 			res.render('partials/error', {
-				'message': 'You are not logged in.'
+				'message': res.__('You are not logged in.')
 			});
 		}
 	});

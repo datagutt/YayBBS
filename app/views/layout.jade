@@ -16,33 +16,33 @@ html
 					if loggedin
 						div#user-box.node
 							h4
-								span Hi 
+								span #{__('Hi ')}
 								a(href='/user/#{sUser.username}') #{sUser.username}
 							ul
 								li
-									a#preferences(href='/preferences') Preferences
+									a#preferences(href='/preferences') #{__('Preferences')}
 								li
 									form(action='/auth/logout', method='post')
 										input(type='hidden', name='_csrf', value=token)
-										input#logout_btn(type='submit', value='Log out!')
+										input#logout_btn(type='submit', value=__(''Log out!'))
 					else
 						div#login-box.node
-							span.title Not a member?
+							span.title #{__('Not a member?')}
 							p
-								a(href='/auth/register') Register
+								a(href='/auth/register') #{__('Register')}
 							form#login-form(action='/auth/login', method='post')
 								input(type='hidden', name='_csrf', value=token)
 								div
 									label(for='username') U:
 									input#username(type='text', name='username', tabindex='1')
-									button(type='submit', tabindex='3') Do it!
+									button(type='submit', tabindex='3') #{__('Do it!')}
 								div
 									label(for='password') P:
 									input#password(type='password', name='password', tabindex='2')
-									a#forgot-password(href='#') Forgot it?
+									a#forgot-password(href='#') #{__('Forgot it?')}
 					div#categories-box.node
 						h3
-							a(href='/') Categories
+							a(href='/') #{__('Categories')}
 						ul
 							for category in categories
 								li.category 
@@ -51,7 +51,7 @@ html
 					div#content 
 						block content
 				footer
-					p Copyright 2013 #{settings.site_name}
+					p #{__('Copyright')} 2013 #{settings.site_name}
 			script(src='/scripts/YAY.js')
 			block scripts
 			script

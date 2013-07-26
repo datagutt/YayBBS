@@ -1,13 +1,13 @@
 extend ../layout
 block title
 	if category == undefined
-		title All threads | #{settings.site_name}
+		title #{__('All threads')} | #{settings.site_name}
 	else
 		title #{category} | #{settings.site_name}
 block content
 	div#main-title
 		if category == undefined
-			h2 All threads
+			h2 #{__('All threads')}
 		else
 			h2 #{category}
 	for thread in threads
@@ -18,5 +18,5 @@ block content
 			.info
 				span.category
 					a(href='/?c=#{thread.category}') #{thread.category}
-				span.author  Started by #{thread.author}
+				span.author  #{__('Started by')} #{thread.author}
 	!{pagination}
