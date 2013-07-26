@@ -24,7 +24,7 @@ html
 								li
 									form(action='/auth/logout', method='post')
 										input(type='hidden', name='_csrf', value=token)
-										input#logout_btn(type='submit', value=__(''Log out!'))
+										input#logout_btn(type='submit', value=__('Log out!'))
 					else
 						div#login-box.node
 							span.title #{__('Not a member?')}
