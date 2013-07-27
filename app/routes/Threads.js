@@ -6,8 +6,7 @@ module.exports = function(app, models){
 	var config = require('../../config');
 	
 	app.get('/', function(req, res){
-		var config = require('../../config'),
-			categories = [],
+		var categories = [],
 			category,
 			find = {};
 		
