@@ -27,7 +27,10 @@ block content
 											input(type='hidden', name='_csrf', value=token)
 											input(type='hidden', name='id', value=thread._id)
 
-											a(href='#', id="close-thread") Close
+											if thread.closed
+												a(href='#', id="close-thread") Open
+											else
+												a(href='#', id="close-thread") Close
 										
 										form(method='post', action='/deletethread')
 											input(type='hidden', name='_csrf', value=token)

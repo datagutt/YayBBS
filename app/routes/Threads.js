@@ -141,9 +141,37 @@ module.exports = function(app, models){
 					if(err){
 						console.log(err);
 					}
-					res.redirect('/thread/' + thread.id + '/' + req.params.subject +'');
+					res.redirect('/thread/' + thread.id + '/' + app.locals.slug(thread.subject));
 				});
 			});
+		}else{
+			res.render('partials/error', {
+				'message': res.__('You are not logged in.')
+			});
+		}
+	});
+	
+	app.post('/closethread', function(req, res){
+		if(app.locals.loggedin){
+			if(req.body.id){
+				Thread.findOne({_id: req.body.id}, function(err, thread){
+					if(thread){
+						if(thread.user_id == req.session.user.id){
+							thread.closed = !thread.closed;
+							thread.save(function(){
+								res.redirect('/thread/' + thread._id + '/' + app.locals.slug(thread.subject));
+							});
+						}else{
+							res.render('partials/error', {
+								'message': res.__('You are not the owner of this thread.')					});
+						}
+					}
+				});
+			}else{
+				res.render('partials/error', {
+					'message': res.__('This thread does not exist.')
+				});
+			}
 		}else{
 			res.render('partials/error', {
 				'message': res.__('You are not logged in.')

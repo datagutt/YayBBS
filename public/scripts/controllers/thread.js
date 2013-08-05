@@ -14,16 +14,20 @@
 			var url_shortcut = document.getElementById('url-shortcut'),
 				image_shortcut = document.getElementById('image-shortcut'),
 				textarea = document.getElementsByName('comment')[0];
-			url_shortcut.onclick = function(){
-				if(YAY.Utils.wrapText){
-					YAY.Utils.wrapText(textarea, '[](', ')');
-				}
-			};
-			image_shortcut.onclick = function(){
-				if(YAY.Utils.wrapText){
-					YAY.Utils.wrapText(textarea, '![](', ')');
-				}
-			};
+			if(url_shortcut){
+				url_shortcut.onclick = function(){
+					if(YAY.Utils.wrapText){
+						YAY.Utils.wrapText(textarea, '[](', ')');
+					}
+				};
+			}
+			if(image_shortcut){
+				image_shortcut.onclick = function(){
+					if(YAY.Utils.wrapText){
+						YAY.Utils.wrapText(textarea, '![](', ')');
+					}
+				};
+			}
 			
 			var close_thread = document.getElementById('close-thread'),
 				delete_thread = document.getElementById('delete-thread');
