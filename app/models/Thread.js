@@ -7,7 +7,8 @@ module.exports = function(mongoose){
 		subject: {type: String, default: ''},
 		created: {type: Date, default: Date.now},
 		lastUpdate: {type: Date, default: Date.now},
-		category: {type: String, default: 'Discussions'}
+		category: {type: String, default: 'Discussions'},
+		closed: Boolean
 	});
 	Thread = mongoose.model('Thread', Thread);
 	

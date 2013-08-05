@@ -19,6 +19,20 @@ block content
 								ul
 									li &nbsp;
 									li &nbsp;
+							if comment.show_controls
+								div.thread-controls
+									h3 Thread admin
+									div#links
+										form(method='post', action='/closethread')
+											input(type='hidden', name='_csrf', value=token)
+											input(type='hidden', name='id', value=thread._id)
+
+											a(href='#', id="close-thread") Close
+										
+										form(method='post', action='/deletethread')
+											input(type='hidden', name='_csrf', value=token)
+											input(type='hidden', name='id', value=thread._id)
+											a(href='#', id="delete-thread") Delete
 						div.comment-block
 							if comment.deleted
 								div.comment-content(style='color:red') #{__('This comment has been removed.')}
@@ -26,7 +40,7 @@ block content
 								div.comment-content !{formatPost(comment.content, comment.user.username)}
 					div(style='clear:both;')
 			!{pagination}
-			if loggedin
+			if loggedin && !thread.closed
 				form#comment-form(action='', method='post')
 					div#post-shortcuts
 						ul

@@ -81,6 +81,7 @@ module.exports = function(app, models){
 							if(user){
 								comments[i].user = user;
 							}
+							comments[i].show_controls = (req.session.user && page == 1 && comment.user_id == req.session.user.id && !i);
 							if(i == comments.length - 1){			
 								Thread.findOne({_id: comment.thread_id}).lean().exec(function(err, thread){
 									res.render('partials/thread', {
@@ -149,26 +150,69 @@ module.exports = function(app, models){
 			});
 		}
 	});
+	
+	app.post('/deletethread', function(req, res){
+		if(app.locals.loggedin){
+			if(req.body.id){
+				Thread.findOne({_id: req.body.id}, function(err, thread){
+					Comment.remove({thread_id: req.body.id}, function(err, comments){
+						if(err){
+							console.log(err);
+							res.end();
+						}
+						if(thread){
+							if(thread.user_id == req.session.user.id){
+								thread.remove();
+								res.redirect('/');
+							}else{
+								res.render('partials/error', {
+									'message': res.__('You are not the owner of this thread.')
+								});
+							}
+						}else{
+							res.render('partials/error', {
+								'message': res.__('This thread does not exist.')
+							});
+						}
+					});
+				});
+			}else{
+				res.render('partials/error', {
+					'message': res.__('This thread does not exist.')
+				});
+			}
+		}else{
+			res.render('partials/error', {
+				'message': res.__('You are not logged in.')
+			});
+		}
+	});
 
 	app.post('/thread/:id/:subject', function(req, res){
 		if(app.locals.loggedin){
-			var comment = new Comment({
-				'user_id': req.session.user.id,
-				'thread_id': req.params.id,
-				'content': req.body.comment
-			});
-			comment.save(function(err){
-				if(err){
-					console.log(err);
+			Thread.findOne({_id: req.params.id}, function(err, thread){
+				if(thread && !thread.closed){
+					var comment = new Comment({
+						'user_id': req.session.user.id,
+						'thread_id': req.params.id,
+						'content': req.body.comment
+					});
+					comment.save(function(err){
+						if(err){
+							console.log(err);
+						}
+						if(thread){
+							thread.lastUpdate = new Date();
+							thread.save(function(){
+								res.redirect('/thread/' + req.params.id + '/' + req.params.subject);
+							});
+						}
+					});
+				}else{
+					res.render('partials/error', {
+						'message': res.__('Thread is closed.')
+					});
 				}
-				Thread.findOne({_id: req.params.id}, function(err, thread){
-					if(thread){
-						thread.lastUpdate = new Date();
-						thread.save(function(){
-							res.redirect('/thread/' + req.params.id + '/' + req.params.subject);
-						});
-					}
-				});
 			});
 		}else{
 			res.render('partials/error', {

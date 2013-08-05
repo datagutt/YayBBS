@@ -24,6 +24,21 @@
 					YAY.Utils.wrapText(textarea, '![](', ')');
 				}
 			};
+			
+			var close_thread = document.getElementById('close-thread'),
+				delete_thread = document.getElementById('delete-thread');
+			close_thread.onclick = function(){
+				if(close_thread.parentNode){
+					close_thread.parentNode.submit();
+				}
+			}
+			delete_thread.onclick = function(){
+				if(delete_thread.parentNode){
+					if(confirm('Are you sure you want to delete this thread?')){
+						delete_thread.parentNode.submit();
+					}
+				}
+			}
 		}
 	};
 	
