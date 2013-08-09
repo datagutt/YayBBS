@@ -10,8 +10,9 @@ block content
 			h2 #{__('All threads')}
 		else
 			h2 #{category}
-	div#new-thread
-		a(href='/newthread') New thread
+	if loggedin
+		div#new-thread
+			a(href='/newthread') New thread
 	for thread in threads
 		article.thread
 			.subject
