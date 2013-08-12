@@ -5,6 +5,7 @@ var fs = require('fs'),
 	slug = require('slug'),
 	markdown = require('markdown').markdown,
 	sanitize = require('validator').sanitize,
+	emoji = require('emoji-images'),
 	i18n = require('i18n');
 var config = require('./config'),
 	appDir = __dirname + '/app/',
@@ -52,6 +53,8 @@ app.locals.formatPost = function(str, user){
 	str = markdown.toHTML(str);
 	// Me-ify
 	str = meify(str, user);
+	// Emoji is all the rage nowadays
+	str = emoji(str, '/images/emojis', 18);
 	// Sanitize to protect from XSS
 	str = sanitize(str).xss();
 	return str;
