@@ -8,50 +8,47 @@ html
 		block title
 			title #{settings.site_name}
 		body
+			form(action='/auth/logout', method='post')#logout_form
+				input(type='hidden', name='_csrf', value=token)
 			div#wrapper
 				div#left-col
 					header
 						h1#logo
 							a(href='/') #{settings.site_name}
+					nav
 					if loggedin
 						div#user-box.node
-							h4
+							h3
 								span #{__('Hi ')}
 								a(href='/user/#{sUser.username}') #{sUser.username}
-							ul
+					else
+						div#login-box.node
+							form#login-form(action='/auth/login', method='post')
+								h3 Login
+								input(type='hidden', name='_csrf', value=token)
+								div
+									input#username(type='text', placeholder='Username',  name='username', tabindex='1')
+								div
+									input#password(type='password', placeholder='Password', name='password', tabindex='2')
+									a#forgot-password(href='#') #{__('Forgot it?')}
+									button(type='submit', tabindex='3') #{__('Do it!')}
+					nav
+						ul
+							li
+								a(href='/') Home
+							if loggedin
 								li
 									a#preferences(href='/preferences') #{__('Preferences')}
 								li
-									form(action='/auth/logout', method='post')
-										input(type='hidden', name='_csrf', value=token)
-										input#logout_btn(type='submit', value=__('Log out!'))
-					else
-						div#login-box.node
-							span.title #{__('Not a member?')}
-							p
-								a(href='/auth/register') #{__('Register')}
-							form#login-form(action='/auth/login', method='post')
-								input(type='hidden', name='_csrf', value=token)
-								div
-									label(for='username') U:
-									input#username(type='text', name='username', tabindex='1')
-									button(type='submit', tabindex='3') #{__('Do it!')}
-								div
-									label(for='password') P:
-									input#password(type='password', name='password', tabindex='2')
-									a#forgot-password(href='#') #{__('Forgot it?')}
-					div#categories-box.node
-						h3
-							a(href='/') #{__('Categories')}
-						ul
-							for category in categories
-								li.category 
-									a(href='/?c=#{category}') #{category}
+									a#logout-btn(href='#', onclick='javascript:document.forms[0].submit();') #{__('Log out!')}
+							else
+								li
+									a(href='/auth/register') Register
+					footer
+						p #{__('Copyright')} 2013 #{settings.site_name}
 				div#right-col
 					div#content 
 						block content
-				footer
-					p #{__('Copyright')} 2013 #{settings.site_name}
 			script(src='/scripts/YAY.js')
 			block scripts
 			script

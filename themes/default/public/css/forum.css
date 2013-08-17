@@ -29,22 +29,38 @@ input, select, textarea {
 	width: 100%;
 	margin: 0 auto;
 }
-header {
-	
+#logout-form, #logout-form input {
+	display: none;
+	width: 0;
+	height: 0;
+	padding: 0;
+}
+header h1 {
+	text-decoration: none;
 }
 #left-col {
-	position: absolute;
-	top: 15px;
-	left: 25px;
+	background: #333333;
+	position: fixed;
+	top: 0;
 	width: 200px;
+	height: 100%;
+	min-height: 700px;
+}
+#left-col a {
+	color: #fff;
+}
+#right-col {
+	margin: 25px 0 0 240px;
+	padding: 0 25px 50px 0;
+	overflow: hidden;
 }
 .node {
 	padding: 10px;
+	padding-left: 0px;
 	margin: 0px;
 	margin-bottom:15px;
 }
 #login-box {
-	background: #494949;
 	min-height: 110px;
 }
 /* I should use h5 but it derps */
@@ -54,6 +70,9 @@ header {
 	padding-bottom: 1em;
 	color: #ffffff;
 	font-weight: 900;
+}
+#login-box h3 {
+	font-size: 18px;
 }
 #login-box p {
 	font-size: 9px;
@@ -69,15 +88,12 @@ header {
 #login-box, #login-form label {
 	color: #ffffff;
 }
-#login-form label {
-	margin-right: 3px;
-}
 #login-form input {	
-	width: 90px;
+	width: 120px;
 	margin-right: 8px;
 }
 #login-form button {	
-	font-size: 9px;
+	font-size: 11px;
 }
 #login-form div {
 	margin-bottom: 5px;
@@ -85,31 +101,45 @@ header {
 	padding-top: 3px;
 }
 #user-box {
-	border: 1px dotted #959595;
-	padding: 10px;
 	margin-bottom: 15px;
 }
-#user-box h4 {
+#user-box h3 {
+	color: #fff;
 	padding-bottom: 3px;
+}
+#user-box h3:after {
+	display: inline;
+	content: '.';
+}
+#user-box ul {
+	list-style: none;
 }
 #user-box li {
 	line-height: 10px;
 }
-#categories-box {
-	background-color: #E9F8FE;
+#left-col h1 a:hover, #left-col h3 a:hover {
+	background: none;
 }
-#categories-box ul {
-	margin: 0px;
-	padding: 0px;
+nav ul {
+	border-top: 1px solid #959595;
+	list-style: none;
+	padding: 0;
 }
-#categories-box li {
-	color: #777777;
-	font-size: 11px;
-	list-style-type: none;
+nav .space {
+	display: block;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	clear: both;
 }
-#right-col {
-	margin: 25px 0 0 240px;
-	padding: 0 25px 50px 0;
+nav li a {
+	position: relative;
+	padding: 10px 30px;
+	color: #E9E9E9;
+	display: block;
+	font-weight: 500;
+	border-bottom: 1px solid #959595;
+	font-size: 15px;
+	text-decoration: none;
 }
 #main-title, #error-title {
 	height: 50px;
@@ -226,11 +256,10 @@ article, footer, .comments, form, aside {
 	padding: 1em 0 .8em;
 }
 footer {
-	text-align: center;
-	padding: 30px 0 10px 0;
-	font-size: 11px;
+	position: absolute;
+	left: 30px;
+	bottom: 20px;
 	color: #999;
-	clear: both;
 }
 /* Typography */
 h1{
