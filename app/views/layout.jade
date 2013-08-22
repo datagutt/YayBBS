@@ -53,7 +53,7 @@ html
 			block scripts
 			script
 				YAY.config.user = {
-					username: '#{sUser.username}',
+					username: #{!!loggedin} ? '#{sUser.username}' : false,
 					loggedin: #{!!loggedin}
 				};
 

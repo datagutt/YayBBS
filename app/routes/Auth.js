@@ -113,7 +113,7 @@ module.exports = function(app, models){
 	app.post('/auth/logout', function(req, res){
 		req.session.loggedin = false;
 		if(req.session.user){
-			delete req.session.user;
+			req.session.user = false;
 		}
 		res.redirect('/');
 	});

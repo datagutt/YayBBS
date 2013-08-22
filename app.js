@@ -28,10 +28,8 @@ app.use(express.cookieParser());
 app.use(express.session({secret: config.server.secret}));
 app.use(express.csrf());
 app.use(function(req, res, next){
-	app.locals.loggedin = (typeof req.session.user !== 'undefined');
-	if(req.session.user){
-		app.locals.sUser = req.session.user;
-	}
+	app.locals.loggedin = (typeof req.session.user == 'object');
+	app.locals.sUser = req.session.user ? req.session.user : false;
 	next();
 });
 app.use(function(req, res, next){
