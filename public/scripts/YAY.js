@@ -5,6 +5,7 @@
 	YAY.Utils = {};
 	YAY.loaded = false;
 	YAY.queue = [];
+	YAY.config = {};
 	
 	if(document.selection && typeof document.selection.createRange == 'function'){
 		YAY.Utils.insertAtCaret = function(el, value){

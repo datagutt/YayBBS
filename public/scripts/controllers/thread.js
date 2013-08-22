@@ -19,6 +19,7 @@
 					if(YAY.Utils.wrapText){
 						YAY.Utils.wrapText(textarea, '[](', ')');
 					}
+					return false;
 				};
 			}
 			if(image_shortcut){
@@ -26,22 +27,25 @@
 					if(YAY.Utils.wrapText){
 						YAY.Utils.wrapText(textarea, '![](', ')');
 					}
+					return false;
 				};
 			}
 			
 			var close_thread = document.getElementById('close-thread'),
 				delete_thread = document.getElementById('delete-thread');
-			close_thread.onclick = function(){
+			close_thread.onclick = function(e){
 				if(close_thread.parentNode){
 					close_thread.parentNode.submit();
 				}
+				return false;
 			}
-			delete_thread.onclick = function(){
+			delete_thread.onclick = function(e){
 				if(delete_thread.parentNode){
 					if(confirm('Are you sure you want to delete this thread?')){
 						delete_thread.parentNode.submit();
 					}
 				}
+				return false;
 			}
 		}
 	};

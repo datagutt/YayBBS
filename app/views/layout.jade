@@ -52,6 +52,11 @@ html
 			script(src='/scripts/YAY.js')
 			block scripts
 			script
+				YAY.config.user = {
+					username: '#{sUser.username}',
+					loggedin: #{!!loggedin}
+				};
+
 				var controller = window.location.pathname.split('/')[1];
 				if(YAY.controllers && YAY.controllers[controller] && typeof YAY.controllers[controller].init == 'function'){
 					YAY.queue.push(YAY.controllers[controller].init);
