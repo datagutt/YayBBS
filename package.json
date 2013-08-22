@@ -1,18 +1,17 @@
 {
-	"name": "yaybbs",
-	"version": "0.0.1",
-	"private": true,
-	"dependencies": {
-        "express": "",
-		"mongoose": "",
-		"slug": "",
-		"markdown": "",
-		"date-format-lite": "",
-		"request": "",
-		"validator": "",
-		"i18n": "",
-		"pagination": "",
-		"emoji-images": ""
-	}
+  "name": "yaybbs",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "express": "",
+    "mongoose": "",
+    "slug": "",
+    "markdown": "",
+    "date-format-lite": "",
+    "request": "",
+    "validator": "",
+    "i18n": "",
+    "pagination": "",
+    "emoji-images": ""
+  }
 }
-
