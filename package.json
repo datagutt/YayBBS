@@ -12,6 +12,7 @@
     "validator": "",
     "i18n": "",
     "pagination": "",
-    "emoji-images": ""
+    "emoji-images": "",
+    "bcrypt-nodejs": "0.0.3"
   }
 }

@@ -1,5 +1,5 @@
 var mongoose = require('mongoose'),
-	bcrypt = require('bcrypt');
+	bcrypt = require('bcrypt-nodejs');
 module.exports = function(mongoose){
 	var Schema = mongoose.Schema,
 		ObjectId = Schema.ObjectId,
