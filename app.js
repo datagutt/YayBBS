@@ -4,7 +4,7 @@ var fs = require('fs'),
 	db = require('mongoose'),
 	slug = require('slug'),
 	markdown = require('markdown').markdown,
-	sanitize = require('validator').sanitize,
+	sanitize = require('sanitizer'),
 	emoji = require('emoji-images'),
 	i18n = require('i18n');
 var config = require('./config'),
@@ -22,7 +22,8 @@ app.set('site_name', config.site.name);
 app.use(express.static(__dirname + '/public'));
 app.use(express.static(themeDir + '/public'));
 
-app.use(express.bodyParser());
+app.use(express.urlencoded())
+app.use(express.json())
 app.use(express.methodOverride());
 app.use(express.cookieParser());
 app.use(express.session({secret: config.server.secret}));
@@ -33,7 +34,7 @@ app.use(function(req, res, next){
 	next();
 });
 app.use(function(req, res, next){
-	res.locals.token = req.session._csrf;
+	res.locals.token = req.csrfToken();
 	next();
 });
 app.use(i18n.init);
@@ -51,10 +52,10 @@ app.locals.formatPost = function(str, user){
 	str = markdown.toHTML(str);
 	// Me-ify
 	str = meify(str, user);
+	// Sanitize to protect from XSS
+	str = sanitize.sanitize(str);
 	// Emoji is all the rage nowadays
 	str = emoji(str, '/images/emojis', 18);
-	// Sanitize to protect from XSS
-	str = sanitize(str).xss();
 	return str;
 };
 app.locals.timeago = require('timeago');

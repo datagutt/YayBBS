@@ -36,6 +36,11 @@ module.exports = function(app, models){
 
 			async.waterfall([
 				function(next){
+					Thread.count({}, function(err, count){
+						next(err, count);
+					});
+				},
+				function(count, next){
 					Thread.find(find)
 					.sort({lastUpdate: -1})
 					.skip(offset)
@@ -49,12 +54,12 @@ module.exports = function(app, models){
 						next(err, threads);
 					});
 				}
-			], function(err, threads, threadCount){
+			], function(err, threads, count){
 				var paginator = new pagination.ItemPaginator({
 					prelink: '/',
 					current: page,
 					rowsPerPage: perPage,
-					totalResult: threadCount
+					totalResult: count
 				});
 				
 				if(threads.length > 0){
