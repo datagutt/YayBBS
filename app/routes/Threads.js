@@ -46,12 +46,12 @@ module.exports = function(app, models){
 					.skip(offset)
 					.limit(perPage)
 					.lean().exec(function(err, threads){
-						next(err, threads);
+						next(err, threads, count);
 					});
 				},
-				function(threads, next){
+				function(threads, count, next){
 					async.map(threads, findUserByThread, function(err, threads){
-						next(err, threads);
+						next(err, threads, count);
 					});
 				}
 			], function(err, threads, count){
