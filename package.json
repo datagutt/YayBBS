@@ -11,8 +11,9 @@
     "request": "",
     "validator": "",
     "i18n": "",
-    "pagination": "",
+    "pagination": "~0.3.7",
     "emoji-images": "",
-    "bcrypt-nodejs": "0.0.3"
+    "bcrypt-nodejs": "0.0.3",
+    "async": "~0.2.9"
   }
 }

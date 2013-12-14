@@ -21,5 +21,8 @@
 	"Preferences": "Preferences",
 	"Log out!": "Log out!",
 	"You are not logged in.": "You are not logged in.",
-	"Wrong username or password": "Wrong username or password"
+	"Wrong username or password": "Wrong username or password",
+	"This category is empty.": "This category is empty.",
+	"Password must contain more than 5 characters": "Password must contain more than 5 characters",
+	"Username is already registered": "Username is already registered"
 }

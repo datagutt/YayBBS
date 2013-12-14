@@ -1,9 +1,19 @@
-var pagination = require('pagination');
+var async = require('async'),
+	pagination = require('pagination');
 module.exports = function(app, models){
 	var Thread = models.Thread;
 	var Comment = models.Comment;
 	var User = models.User;
 	var config = require('../../config');
+	
+	var findUserByThread = function(thread, _callback){
+		User.findOne({_id: thread.user_id})
+		.lean()
+		.exec(function(err, user){
+			thread.author = user.username;
+			_callback(null, thread);
+		});
+	};
 	
 	app.get('/', function(req, res){
 		var categories = [],
@@ -23,30 +33,37 @@ module.exports = function(app, models){
 		var page = req.query.page ? parseInt(req.query.page, 10) : 1,
 			perPage = 10,
 			offset = (page - 1) * perPage;
-		Thread.find(find).sort({lastUpdate: -1}).skip(offset).limit(perPage).lean().exec(function(err, threads){
-			Thread.count({}, function(err, threadCount){
-				if(threads.length > 0){
-					var paginator = new pagination.ItemPaginator({
-						prelink: '/',
-						current: page,
-						rowsPerPage: perPage,
-						totalResult: threadCount
+
+			async.waterfall([
+				function(next){
+					Thread.find(find)
+					.sort({lastUpdate: -1})
+					.skip(offset)
+					.limit(perPage)
+					.lean().exec(function(err, threads){
+						next(err, threads);
 					});
-					var i = 0;
+				},
+				function(threads, next){
+					async.map(threads, findUserByThread, function(err, threads){
+						next(err, threads);
+					});
+				}
+			], function(err, threads, threadCount){
+				var paginator = new pagination.ItemPaginator({
+					prelink: '/',
+					current: page,
+					rowsPerPage: perPage,
+					totalResult: threadCount
+				});
+				
+				if(threads.length > 0){
 					threads.forEach(function(thread){
-						User.findOne({_id: thread.user_id}).lean().exec(function(err, user){
-							if(user){
-								threads[i].author = user.username;
-							}
-							if(i == threads.length - 1){
-								res.render('partials/threads', {
-									'threads': threads,
-									'categories': categories,
-									'category': category,
-									'pagination': paginator.render()
-								});
-							}
-							i++;
+						res.render('partials/threads', {
+							'threads': threads,
+							'categories': categories,
+							'category': category,
+							'pagination': paginator.render()
 						});
 					});
 				}else if(categories.length == 0){
@@ -59,7 +76,6 @@ module.exports = function(app, models){
 					});
 				}
 			});
-		});
 	});
 	
 	app.get('/thread/:id/:subject', function(req, res){
