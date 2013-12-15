@@ -18,7 +18,10 @@ module.exports = function(app, models){
 		User.findOne({_id: comment.user_id})
 		.lean()
 		.exec(function(err, user){
-			comment.user = user;
+			comment.user = {
+				'username': user.username,
+				'avatar': user.avatar
+			};
 			_callback(null, comment);
 		});
 	};
