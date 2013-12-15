@@ -6,12 +6,20 @@ module.exports = function(app, models){
 	var User = models.User;
 	var config = require('../../config');
 	
-	var findUserByThread = function(thread, _callback){
+	var findThreadAuthor = function(thread, _callback){
 		User.findOne({_id: thread.user_id})
 		.lean()
 		.exec(function(err, user){
 			thread.author = user.username;
 			_callback(null, thread);
+		});
+	};
+	var findCommentUser = function(comment, _callback){
+		User.findOne({_id: comment.user_id})
+		.lean()
+		.exec(function(err, user){
+			comment.user = user;
+			_callback(null, comment);
 		});
 	};
 	
@@ -50,7 +58,7 @@ module.exports = function(app, models){
 					});
 				},
 				function(threads, count, next){
-					async.map(threads, findUserByThread, function(err, threads){
+					async.map(threads, findThreadAuthor, function(err, threads){
 						next(err, threads, count);
 					});
 				}
@@ -63,13 +71,11 @@ module.exports = function(app, models){
 				});
 				
 				if(threads.length > 0){
-					threads.forEach(function(thread){
-						res.render('partials/threads', {
-							'threads': threads,
-							'categories': categories,
-							'category': category,
-							'pagination': paginator.render()
-						});
+					res.render('partials/threads', {
+						'threads': threads,
+						'categories': categories,
+						'category': category,
+						'pagination': paginator.render()
 					});
 				}else if(categories.length == 0){
 					res.render('partials/error', {
@@ -87,37 +93,65 @@ module.exports = function(app, models){
 		var page = req.query.page ? parseInt(req.query.page, 10) : 1,
 			perPage = 5,
 			offset = (page - 1) * perPage;
-		Comment.find({thread_id: req.params.id}).sort({created: 1}).skip(offset).limit(perPage).lean().exec(function(err, comments){
-			if(comments && comments.length > 0){
-				var i = 0;
-				Comment.count({thread_id: req.params.id}, function(err, commentCount){
-					var paginator = new pagination.ItemPaginator({
-						prelink: '/thread/' + req.params.id + '/' + req.params.subject,
-						current: page,
-						rowsPerPage: perPage,
-						totalResult: commentCount
+		
+			async.waterfall([
+				function(next){
+					Comment.count({}, function(err, count){
+						next(err, count);
 					});
-					comments.forEach(function(comment){
-						User.findOne({_id: comment.user_id}).lean().exec(function(err, user){
-							if(user){
-								comments[i].user = user;
-							}
-							comments[i].show_controls = (req.session.user && page == 1 && comment.user_id == req.session.user.id && !i);
-							if(i == comments.length - 1){			
-								Thread.findOne({_id: comment.thread_id}).lean().exec(function(err, thread){
-									res.render('partials/thread', {
-										'thread': thread,
-										'comments': comments,
-										'pagination': paginator.render()
-									});
-								});
-							}
-							i++;
+				},
+				function(count, next){
+					Comment.find({thread_id: req.params.id})
+					.sort({created: 1})
+					.skip(offset)
+					.limit(perPage)
+					.lean()
+					.exec(function(err, comments){
+						next(err, comments, count);
+					});
+				},
+				function(comments, count, next){
+					async.map(comments, findCommentUser, function(err, comments){
+						next(err, comments, count);
+					});
+				},
+				function(comments, count, next){
+					var i = 0,
+						firstComment = false;
+					async.map(comments, function(comment, _callback){
+						if(!i){
+							firstComment = true;
+						}else{
+							firstComment = false;
+						}
+						
+						comment.show_controls = (req.session.user && page == 1 && comment.user_id == req.session.user.id && firstComment);
+						
+						i++;
+						_callback(null, comment);
+					}, function(err, comments){
+						next(err, comments, count);
+					});
+				}
+			], function(err, comments, count){
+				var paginator = new pagination.ItemPaginator({
+					prelink: '/thread/' + req.params.id + '/' + req.params.subject,
+					current: page,
+					rowsPerPage: perPage,
+					totalResult: count
+				});
+
+				if(comments && comments.length > 0){
+					Thread.findOne({_id: comments[0].thread_id})
+					.lean()
+					.exec(function(err, thread){
+						res.render('partials/thread', {
+							'thread': thread,
+							'comments': comments,
+							'pagination': paginator.render()
 						});
 					});
-				});
-			}else{
-				if(page > 0 && offset > 0){
+				}else if(page > 0 && offset > 0){
 					res.render('partials/error', {
 						'message': res.__('This page of thread does not exist.')
 					});
@@ -126,8 +160,7 @@ module.exports = function(app, models){
 						'message': res.__('This thread does not exist.')
 					});
 				}
-			}
-		});
+			});
 	});
 	
 	app.get('/newthread', function(req, res){
